@@ -1,11 +1,11 @@
 /* Copyright (c) 2018 ÍõÔª
  * 20180101
- * virtual file system
+ * ÃüÁî½âÎöÆ÷
  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __VFS_H
-#define __VFS_H
+#ifndef __VSHELL_H
+#define __VSHELL_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "common.h"
@@ -13,20 +13,16 @@
 /* Exported types ------------------------------------------------------------*/
 typedef struct
 {
-  uint32_t pagesize;
-  uint32_t filenum;
-  uint32_t fsid;
-  char filename[8];
-  uint32_t filelength;
-  void (*fsinit);
-  void (*IOCtrl);
-  void (*Creat);
-  void (*Open);
-  void (*Read);
-  void (*Write);
-  void (*Delete);
-  void (*Close);	
-} vfs_t;
+  char cmd[8];
+  char parameter[8];
+  uint8_t *data;
+  
+  void (*ParseCMD);
+  void (*Pipe);
+  void (*Dup);
+  
+} vshell_t;
+
 
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
