@@ -82,6 +82,7 @@ typedef struct
   uint32_t bfreserved;  // 0
   uint32_t bfoffbits;   // 0x00000436
 } bitmapfileheader_t;
+
 typedef struct
 {
   uint32_t biSize;              //指定此结构体的长度，为40  
@@ -149,32 +150,45 @@ typedef struct
 /* Exported constants --------------------------------------------------------*/
 
 /* Exported macros -----------------------------------------------------------*/
+#define PORTPIN(PORT, PIN, MODE)  	{ PORT, GPIO_PIN_ ## PIN, MODE }
+
 #define MV2ADC(__X__)           ( (__X__*4095) / 3300 )
 #define ADC2MV(__X__)           ( (__X__*3300) / 4095 )
-#ifndef MIN
-#define MIN(a,b) (((a)<(b))?(a):(b))
-#endif
-#ifndef MAX
-#define MAX(a,b) (((a)>(b))?(a):(b))
-#endif
+
+//#define MIN(a,b) (((a)<(b))?(a):(b))
+//#define MAX(a,b) (((a)>(b))?(a):(b))
 #define ABS(A,B) ((A) <= (B) ? (B-A) : (A-B))
-#define PORTPIN(PORT, PIN, MODE)  	{ PORT, GPIO_PIN_ ## PIN, MODE }
 
 // 得到指定地址上的数据
 #define  MEM_B( x )  ( *( (byte *) (x) ) ) 
 #define  MEM_W( x )  ( *( (word *) (x) ) )  
-
 // 得到结构体类型中成员的偏移量 struct type field offset
-#define STFO(type, field) ((int) &((type *) 0)-> field)
+#define FPOS(type, field) ((int) &((type *) 0)-> field)
 // 结构体中的字节数
 #define FSIZ(type, field) sizeof( ((type *) 0)->field ) 
-
+//按照LSB格式把两个字节转化为一个word
+ #define  FLIPW( ray ) ( (((word) (ray)[0]) * 256) + (ray)[1] )
 // 获取缓冲区的长度
 #define countof(array)      (sizeof(array) / sizeof(*(array)))
-
 //将一个字母转换为大写
 #define UPCASE( c ) ( ((c) >= ’a' && (c) <= ’z') ? ((c) - 0×20) : (c) )
+//判断字符是不是10进值的数字
+#define  DECCHK( c ) ((c) >= ’0′ && (c) <= ’9′)
+//判断字符是不是16进值的数字
+#define  HEXCHK( c ) ( ((c) >= ’0′ && (c) <= ’9′) || ((c) >= ’A' && (c) <= ’F') || ((c) >= ’a' && (c) <= ’f') )
+//返回数组元素的个数
+ #define  ARR_SIZE( a )  ( sizeof( (a) ) / sizeof( (a[0]) ) )
+// 当定义了_DEBUG，输出数据信息和所在文件所在行
+#ifdef _DEBUG
+ #define DEBUGMSG(msg,date) printf(msg);printf(“%d%d%d”,date,_LINE_,_FILE_)
+#else
+ #define DEBUGMSG(msg,date)
+#endif
+// 使用#把宏参数变为一个字符串,用##把两个宏参数贴合在一起.
+#define STR(s)     #s           // printf(STR(vck));            // 输出字符串vck
+#define CONS(a,b)  int(a##e##b) // printf(%dn, CONS(2,3));      // 2e3 输出:2000
 
+   
 #define IS_CAP_LETTER(c)    (((c) >= 'A') && ((c) <= 'F'))
 #define IS_LC_LETTER(c)     (((c) >= 'a') && ((c) <= 'f'))
 #define IS_09(c)            (((c) >= '0') && ((c) <= '9'))

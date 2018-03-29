@@ -16,6 +16,10 @@ typedef struct
 {
   uint32_t delay;
   void (*Config)(void);
+  void (*CreatLed)(void);
+  void (*LedOn)(void);
+  void (*LedOff)(void);
+  void (*LedFlow)(uint16_t on, uint16_t off);
 } led_t;
 
 /* Exported constants --------------------------------------------------------*/
