@@ -17,7 +17,7 @@ void LEDThread(void const *argument)
 {
   while (1)
   {
-    HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+    HAL_GPIO_TogglePin(led_GPIO_Port, led_Pin);
     osDelay(1000);
   }
   

@@ -1,10 +1,10 @@
 /* Copyright (c) 2018 王元
  * 20180101
- * BOTTOM类
+ * BUTTON类
  */
 
 /* Includes ------------------------------------------------------------------*/
-#include "bottom.h"
+#include "button.h"
 
 /* Exported define -----------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -16,7 +16,7 @@ int8_t GetBottomState(void)
   return 0;
 }
 
-void ButtomThread(void const *argument)
+void ButtonThread(void const *argument)
 {
 //  while (1)
 //  {
@@ -32,7 +32,7 @@ void ButtomThread(void const *argument)
 //  }
 }
 
-void BottomConfig(void)
+void ButtonConfig(void)
 {
   
 }

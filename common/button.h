@@ -1,11 +1,11 @@
 /* Copyright (c) 2018 王元
  * 20180101
- * BOTTOM类
+ * BUTTON类
  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __BOTTOM_H
-#define __BOTTOM_H
+#ifndef __BUTTON_H
+#define __BUTTON_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "common.h"
@@ -30,10 +30,10 @@ typedef struct
 {
   uint32_t delay;
   void (*config)(void);
-} bottom_t;
+} button_t;
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void BottomConfig(void);
+void ButtonConfig(void);
 
 #endif
