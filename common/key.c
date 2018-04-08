@@ -1,93 +1,81 @@
-/* Copyright (c) 2018 王元
- * 20180101
- * BUTTON类
+/* Copyright (c) 2017 pace 王元
+ * 
+ * fingerprint identification
  */
 
 /* Includes ------------------------------------------------------------------*/
-#include "button.h"
-
+#include "key.h"
 /* Exported define -----------------------------------------------------------*/
+
+/* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+/* KEY */
+key_t key;
 
-int8_t GetBottomState(void)
+// 获取按键状态，需要加入对应的IO状态判断
+uint8_t GetKey(void)
 {
-  return 0;
-}
-
-void ButtonThread(void const *argument)
-{
-//  while (1)
-//  {
-//    if (HAL_GPIO_ReadPin(BOTTOM_PORT, BOTTOM_PIN) == GPIO_PIN_SET)
-//    {
-//      rotarynum = 0;
-//    }
-//    if (HAL_GPIO_ReadPin(BOTTOM_Port, BOTTOM_Pin) == GPIO_PIN_RESET)
-//    {
-//      rotarynum = 0;
-//    } 
-//    osDelay(100);
-//  }
+  return HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
 }
 
-void ButtonConfig(void)
-{
-  
-}
-#if 0
-uint8_t KeyCallBack(void)
-{
-	
-}
-void KeyProc(void)
+// 放在1ms定时器
+void RefreshKey(void)
 {
   key.stabletimecnt++;
-  switch (key.state)
+  if (key.stabletimecnt > 1000)
+  {
+    key.laststate = IDLESTATE;
+  }
+  
+  switch (key.keystate)
   {
   case KEYUP:
-    if (key.KeyCallBack() == 1)
+    if (key.GetKey() == 1)
     {
-      key.state = KEYDOWNWOBBLE;
+      key.keystate = KEYDOWNWOBBLE;
       key.stabletimecnt = 0;
     }
     break;
   case KEYDOWNWOBBLE:
-    if (key.KeyCallBack() == 0)
+    if (key.GetKey() == 0)
     {
-      key.state = KEYUP;
+      key.keystate = KEYUP;
     }
     if (key.stabletimecnt > 20)
     {
-      key.state = KEYDOWN;
+      key.keystate = KEYDOWN;
+      key.keycallbackflag = KEYDOWN;
       key.stabletimecnt = 0;
     }
     break;
   case KEYDOWN:
-    if (key.KeyCallBack() == 0)
+    if (key.GetKey() == 0)
     {
-    key.state = KEYUPWOBBLE;
+      key.keystate = KEYUPWOBBLE;
     }
     if (key.stabletimecnt > 1000)
     {
-    key.state = KEYLONGDOWN;
+      key.keystate = KEYLONGDOWN;
     }
     break;
   case KEYLONGDOWN:
-    if (key.KeyCallBack() == 0)
+    if (key.GetKey() == 0)
     {
-    key.state = KEYUPWOBBLE;
+      key.keystate = KEYUPWOBBLE;
     }
     break;
   case KEYUPWOBBLE:
-    if (key.KeyCallBack() == 1)
+    if (key.GetKey() == 1)
     {
-    key.state = KEYDOWN;
+      key.keystate = KEYDOWN;
     }
     if (key.stabletimecnt > 20)
     {
-    key.state = KEYUP;
+      key.keystate = KEYUP;
+      key.stabletimecnt = 0;
+      key.keycallbackflag = KEYUP;
     }
     break;
   case DOUBLECLKICKWOBBLE:
@@ -96,7 +84,8 @@ void KeyProc(void)
     break;
   }
 }
-void KeyInit(void)
+// 创建注册按键
+void CreatKey(void)
 {
   key.keystate = KEYUP;
   key.laststate = IDLESTATE;
@@ -104,4 +93,3 @@ void KeyInit(void)
   key.GetKey = GetKey;
   key.RefreshKey = RefreshKey;
 }
-#endif

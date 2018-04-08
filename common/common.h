@@ -50,21 +50,6 @@ typedef enum {FAILED = 0, PASSED = !FAILED} status_t;
 /* Exported types ------------------------------------------------------------*/
 typedef  void (*pFunction)(void);
 
-/* IC proc */
-typedef struct
-{
-  uint8_t cmd[2];
-  uint8_t cmdsize;
-  uint8_t addrsize; 
-  uint8_t addr[4];
-  uint8_t reg[4];
-  uint16_t readsize;
-  uint16_t writesize;
-  uint8_t *data;
-  void (*read)(void *pointhandle, ...);
-  void (*write)(void *pointhandle, ...);
-} cmdparam_t;   // 看能不能做成通用标准芯片读写结构
-
 /* POINT */
 #define SMOOTHDEP 6
 typedef struct
@@ -97,12 +82,13 @@ typedef struct
   uint32_t biClrUsed;           //使用的颜色数，如果为0，则表示默认值(2^颜色位数) 
   uint32_t biClrImportant;      //重要颜色数，如果为0，则表示所有颜色都是重要的 
 } bitmapinfoheader_t;
+
 typedef struct 
 {
   uint8_t rgbBlue;              //该颜色的蓝色分量 
   uint8_t rgbGreen;             //该颜色的绿色分量 
   uint8_t rgbRed;               //该颜色的红色分量 
-  uint8_t rgbReserved;          //保留值 
+  uint8_t transparency;         //透明度
 } rgbquad_t;            // 位图不是8的倍数时，数据填充     
 
 typedef struct
@@ -119,33 +105,10 @@ typedef struct
   void (*CreatEncrypt)(void);
 } encrypt_t;
 
-/* interface */
-typedef struct
-{
-  uint8_t sfd;          // 帧开始符 #define 固定 0xA5
-  uint8_t devid;        // 一般就一个只用0x01、0x00主机、0xff广播地址
-  uint16_t length;      // 要不要拆分一个flag在前面？重发次数，
-  uint8_t cmd;          // 指令
-  uint8_t cmdplusl;     // 扩展指令
-  uint8_t cmdplush;     // 扩展指令
-  uint8_t checkcode;    // 用什么校验码好点
-  uint8_t *pdata;       //
-//  uint16_t eop;         // 0x0d 0x0a（即回车换行
-} cmdpackets_t;         //comprotocol_t; datacom
 
 
-/* COMMON */
-typedef struct
-{
-  uint8_t indata[64];
-  uint8_t outdata[64];
-  uint8_t *pbuf;
-//  void (*CommonInit)(void);
-//  void (*CommonDeInit)(void);
-  void (*printf)(void);
-  void (*TxData)(int8_t *pdata, uint16_t size);
-  void (*RxData)(int8_t *pdata, uint16_t size);
-} common_t;
+
+
 
 /* Exported constants --------------------------------------------------------*/
 
