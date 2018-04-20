@@ -115,7 +115,7 @@ void Revs_Stop_Handle(void)
 			)
 		{   
 			//RevStop_State = 1;
-			if(Motordata.prct.Anp>300)
+			if(Motordata.prct.anp>300)
 			{
 				RevStop_Cnt1 ++;
 				if(RevStop_Cnt1 > 100)
@@ -128,20 +128,20 @@ void Revs_Stop_Handle(void)
 			if(RevStop_State == 1)
 			{
 		
-			if(Motordata.ui.Mroller>1&&Motordata.prct.Anp<240)
+			if(Motordata.ui.mroller>1&&Motordata.prct.anp<240)
 			{ 
-				Motordata.ui.Mroller-=1;
+				Motordata.ui.mroller-=1;
 			}
 		
-			if( Motordata.prct.Anp>=240)
+			if( Motordata.prct.anp>=240)
 			{
-				Motordata.ui.Mroller=400;		//450
+				Motordata.ui.mroller=400;		//450
 			}
 			
-			if(Motordata.ui.Mroller<=2)	
+			if(Motordata.ui.mroller<=2)	
 			{
-				Motordata.ui.Blink=0;
-				Motordata.ui.Mroller=450;
+				Motordata.ui.blink=0;
+				Motordata.ui.mroller=450;
 				Motordata.station=Stop;
 				RevStop_State = 0;
 				RevStop_Cnt1 = 0;
@@ -164,23 +164,23 @@ void Revs_Stop_Handle(void)
 	if(Motordata.mfr==DIR_REVS)		//ccw
 	{
 //	
-		if(Motordata.swhkey.FRstop==0xaa)
+		if(Motordata.swhkey.frstop==0xaa)
 		{   
-			if(Motordata.ui.Mroller>1&&Motordata.prct.Anp<240)
+			if(Motordata.ui.mroller>1&&Motordata.prct.anp<240)
 			{ 
-				Motordata.ui.Mroller-=1;
+				Motordata.ui.mroller-=1;
 			}
 		
-			if( Motordata.prct.Anp>=240)
+			if( Motordata.prct.anp>=240)
 			{
-				Motordata.ui.Mroller=450;
+				Motordata.ui.mroller=450;
 			}
 			
-			if(Motordata.ui.Mroller<=2)	
+			if(Motordata.ui.mroller<=2)	
 			{
-				Motordata.ui.Blink=0;
-				Motordata.ui.Mroller=450;
-				Motordata.station=Stop;
+				Motordata.ui.blink=0;
+				Motordata.ui.mroller=450;
+				Motordata.station=stop;
 			}
 		}
 	}
@@ -240,20 +240,20 @@ void TSR_ch_ph(uint8_t ky)
 /*
 	if(Motordata.swhkey.FRstop==0xaa)
 	{   
-		if(Motordata.ui.Mroller>1&&Motordata.prct.Anp<240)
+		if(Motordata.ui.mroller>1&&Motordata.prct.anp<240)
 		{ 
-			Motordata.ui.Mroller-=1;
+			Motordata.ui.mroller-=1;
 		}
 	
-		if( Motordata.prct.Anp>=240)
+		if( Motordata.prct.anp>=240)
 		{
-			Motordata.ui.Mroller=450;
+			Motordata.ui.mroller=450;
 		}
 		
-		if(Motordata.ui.Mroller<=2)	
+		if(Motordata.ui.mroller<=2)	
 		{
-			Motordata.ui.Blink=0;
-			Motordata.ui.Mroller=450;
+			Motordata.ui.blink=0;
+			Motordata.ui.mroller=450;
 			Motordata.station=Stop;
 		}
 	}
@@ -1135,7 +1135,7 @@ void Motor_Run(void)
 				Motordata.flgsw=0;
 				Motordata.outduty=1;
 				DisAllPwmOut();
-				Motordata.ui.Blink=0;
+				Motordata.ui.blink=0;
 				Motordata.station=ready;
 				Adc_Scan_timetrig_init();
 				TIM5_ready_StartCount();
@@ -1145,4 +1145,4 @@ void Motor_Run(void)
 #endif
 }
 
-
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

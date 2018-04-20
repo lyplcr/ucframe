@@ -37,11 +37,6 @@ extern INSERT_DATA gInsert;
 
 extern unsigned char   Get_Step_ForInsertPulse(void);
 
-
-
-
-
-
 extern void     InJect_AB_Task(void);
 extern void     InJect_AC_Task(void);
 extern void     InJect_BC_Task(void);

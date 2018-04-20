@@ -600,5 +600,5 @@ void  POWER_dis_prc()
 
 
 
-
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

@@ -1,7 +1,9 @@
-/* Copyright (c) 王元
- * 20180101
- * 通用类
- */
+/**********************************************************
+*name   : mian.c
+*detail : include public head file
+*version&time: v1.0 (2018-4-1)
+*author&team : wang yuan
+***********************************************************/
 
 /* Includes ------------------------------------------------------------------*/
 #include "common.h"
@@ -16,7 +18,7 @@ uint8_t rxbuffer[BUFFERSIZE];
 uint8_t begainposition;
 uint8_t endposition;
 
-
+/*  functions ----------------------------------------------------------------*/
 /**
   * @brief  Print a string on the HyperTerminal
   * @param  p_string: The string to be printed
