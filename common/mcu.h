@@ -16,18 +16,22 @@ typedef struct
   char company[8];
   uint32_t chipid;
   uint32_t clock;
-  uint32_t ramsize;
-  uint32_t romsize;
-  uint32_t appaddr;
-  void (*CloseISR);	// 这两个用宏定义表示好点
-  void (*TaskSwitch);
-  void (*OpenISR);
+//  uint32_t ramsize;
+//  uint32_t ramaddr;
+//  uint32_t romsize;
+//  uint32_t romaddr;
+//  void (*EnISR);
+//  void (*DisISR);	// 这两个用宏定义表示好点
+//  void (*GetChipID);
+//  void (*TaskSwitch);
 #if 0
+  uint32_t appaddr;
+  uint32_t paramaddr;   // 参数地址即本身地址，可放在固定地址
   uint32_t externram;
   uint32_t externrom;
-  uint32_t externflash;
 #endif
 } mcu_t;
+extern mcu_t mcu;
 
 typedef struct
 {
@@ -42,7 +46,7 @@ typedef struct
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-
+extern void MCUInit(void);
 
 #endif
 

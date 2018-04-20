@@ -8,14 +8,14 @@
 #define __COMMON_H
 
 /* Includes ------------------------------------------------------------------*/
-#include <stdint.h>
+#include <stm8s.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 //#include <stdarg.h>
-#include "stm32f0xx_hal.h"
-#include "cmsis_os.h"
+//#include "stm32f0xx_hal.h"
+//#include "cmsis_os.h"
 //#include "key.h"
 //#include "comgui.h"
 //#include "menugui.h"

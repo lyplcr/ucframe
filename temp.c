@@ -2,15 +2,42 @@ log_debug https://www.amobbs.com/thread-5687433-1-1.html
 lcd菜单 https://www.amobbs.com/thread-5603220-1-1.html
 傻孩子菜单技术https://www.amobbs.com/forum.php?mod=viewthread&tid=5688720&page=1&authorid=261204
 
-参数结构体：pt
-数据结构体：dt
-接口结构体：it
+参数结构体：pt；数据结构体：dt；接口结构体：it
+配置寄存器结构体：mt；控制寄存器结构体：ct；状态寄存器结构体：st
 
-配置寄存器结构体：mt
-控制寄存器结构体：ct
-状态寄存器结构体：st
+开源bootloader：支持串口，支持USB，支持菜单读SD，支持启动模式和下载模式
 
+
+设备驱动架构模型
 通信接口协议、通用万用fifo、
+IRP(I/O Request Package I/O请求包)
+I/O管理器
+
+typedef struct
+{
+	uint32_t start;	// blockhead
+	uint32_t size;
+	uint32_t state;
+} memorymap_t;
+typedef struct
+{
+	open;
+	release;
+	read;
+	write;
+	ioctl;
+	uint8_t *memorybank[4];	// blocksize=1024*4=page
+	uint32_t bankoffset[4];
+} fops_t;	// fileoperations
+
+typedef  struct
+{
+	Register;
+	unregister;
+	uint32_t deviceid;
+	kobjectstate_t state;
+} drivers_t;
+
 
 typedef struct
 {

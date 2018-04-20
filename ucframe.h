@@ -27,7 +27,7 @@ typedef struct
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-
+extern void UCFrameInit(void);
 
 #endif
 
