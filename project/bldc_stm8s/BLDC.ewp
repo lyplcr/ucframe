@@ -1626,6 +1626,30 @@
         </group>
         <group>
             <name>common</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\common\common.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\common\flash.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                </excluded>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\common\key.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\common\led.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                </excluded>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\common\mathex.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\common\time.c</name>
+            </file>
         </group>
     </group>
     <file>

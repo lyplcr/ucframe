@@ -1,6 +1,6 @@
 /**********************************************************
-*name   : mian.c
-*detail : include public head file
+*name   : key.c
+*detail : 按键相关函数
 *version&time: v1.0 (2018-4-1)
 *author&team : wang yuan
 ***********************************************************/
@@ -8,17 +8,18 @@
 /* Includes ------------------------------------------------------------------*/
 #include "common.h"
 
-/* define -----------------------------------------------------------*/
-/* types ------------------------------------------------------------*/
-/* constants --------------------------------------------------------*/
-/* macro ------------------------------------------------------------*/
-/* vriable ----------------------------------------------------------*/
+/*  defines&macro ------------------------------------------------------------*/
+
+/*  typedef ------------------------------------------------------------------*/
+
+/*  variables&constants  -----------------------------------------------------*/
 uint8_t txbuffer[BUFFERSIZE];
 uint8_t rxbuffer[BUFFERSIZE];
 uint8_t begainposition;
 uint8_t endposition;
 
 /*  functions ----------------------------------------------------------------*/
+
 /**
   * @brief  Print a string on the HyperTerminal
   * @param  p_string: The string to be printed
@@ -77,11 +78,6 @@ int8_t RXData(uint32_t handle, uint8_t *data, uint16_t length)
   return 0;
 }
 
-
-
-
-
-
 /* COMMON 注册需要用到的模块 */
 void CommonInit(void)
 {
@@ -89,3 +85,4 @@ void CommonInit(void)
 //  CreatKey();
 }
 
+/************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

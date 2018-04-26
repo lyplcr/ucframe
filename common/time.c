@@ -1,28 +1,32 @@
-/* Copyright (c) 王元
- * 20180101
- * 时间类
- */
+/**********************************************************
+*name   : time.c
+*detail : 时间相关函数
+*version&time: v1.0 (2018-4-1)
+*author&team : wang yuan
+***********************************************************/
 
 /* Includes ------------------------------------------------------------------*/
 #include "time.h"
 
-/* Exported define -----------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
+/*  defines&macro ------------------------------------------------------------*/
 
-/* DATATIME */
+/*  typedef ------------------------------------------------------------------*/
+
+/*  variables&constants  -----------------------------------------------------*/
 datatime_t datatime;
 
+/*  functions ----------------------------------------------------------------*/
+// 
 void Delay(uint16_t delay)
 {
-  uint32_t tickstart = 0U;
+//  uint32_t tickstart = 0U;
   
-  tickstart = HAL_GetTick();
-  while((HAL_GetTick() - tickstart) < delay)
+//  tickstart = HAL_GetTick();
+//  while((HAL_GetTick() - tickstart) < delay)
   {
   }
 }
+
 // 创建注册日期时间
 void CreatDataTime(void)
 {
@@ -30,3 +34,7 @@ void CreatDataTime(void)
   
   datatime.Delay = Delay;
 }
+
+/************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
+
+
