@@ -2098,9 +2098,6 @@
         </settings>
     </configuration>
     <group>
-        <name>bldc</name>
-    </group>
-    <group>
         <name>Libraries</name>
         <file>
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc1.c</name>
@@ -2115,10 +2112,19 @@
     <group>
         <name>ucframe</name>
         <group>
+            <name>bldc</name>
+        </group>
+        <group>
             <name>common</name>
         </group>
     </group>
     <file>
+        <name>$PROJ_DIR$\board\board.c</name>
+    </file>
+    <file>
         <name>$PROJ_DIR$\main.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\stm8s_it.c</name>
     </file>
 </project>

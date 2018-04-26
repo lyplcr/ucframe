@@ -1,14 +1,12 @@
 /**********************************************************
 *name   : main.c
-*detail : »Îø⁄÷˜∫Ø ˝
+*detail : ÂÖ•Âè£‰∏ªÂáΩÊï∞
 *version&time: v1.0 (2018-4-1)
 *author&team : wang yuan
 ***********************************************************/
 
 /* Includes ------------------------------------------------------------------*/
-#include "platform.h"
 #include "board.h"
-//#include "bldc.h"
 
 /*  defines&macro ------------------------------------------------------------*/
 
@@ -17,20 +15,22 @@
 /*  variables&constants  -----------------------------------------------------*/
 
 /*  functions ----------------------------------------------------------------*/
-int main( void )
+void GPIOInit(void)
 {
-  BoardInit();
-//  BLDCInit();
   
-  while (1)
-  {
-    
-  }
-//  return 0;
+}
+
+//
+void TimeInit(void)
+{
+  
+}
+
+//
+void BoardInit(void)
+{
+  GPIOInit();
+  TimeInit();
 }
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
-
-
-
-
