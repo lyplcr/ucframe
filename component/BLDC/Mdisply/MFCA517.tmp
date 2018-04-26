@@ -1,0 +1,360 @@
+
+
+/*******************************coptright(c)***************************************
+*
+* --------------------  ShenZhen  pace  electronics  co.LTD  -------------------
+*
+*                             BLDC  energy  Team
+*
+*---file info----------------------------------------------------------------------
+*
+*  文件名称:	    ADC.c
+*  修改日期：     v1.0
+*  最终版本：     v2.0 
+*  简要描述:      TIME  module init
+*
+*----------------------------------------------------------------------------------
+*  创建作者:       roger luo
+*  创建日期:       2016.04.16
+*  创建版本：      V1.0
+*  创建描述:       TIME  module init
+*
+*----------------------------------------------------------------------------------
+*  修改人员：     NO
+*  修改日期：     NO
+*  修改版本：     NO
+*  修改描述：     NO
+*
+**********************************************************************************/
+
+#include "public.h"
+#include "gpio.h"
+#include "param.h"
+#include "mc_control.h"
+#include "mdisply.h"
+
+
+
+
+/***************************************************
+*代码段名称：
+*使用范围  ：
+*---------------------------------------------------
+*描述：
+****************************************************/
+const    showsp[]={0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void DIS_mode_scan_status()
+{
+switch(Motordata.Disstatus)
+{
+	
+	
+case 1:{//==档位显示===
+        
+				
+			
+				
+				
+		 if(Motordata.MFR==CW)
+
+        { 
+				  PD4_OUT=0;
+			
+				 if( Motordata.SWhkey.Mgear==0x22)
+			
+				   { PB7_OUT=1;
+             PB6_OUT=1;
+				     PE5_OUT =0;
+             PF4_OUT=1;
+					}
+					
+					 if( Motordata.SWhkey.Mgear==0xdd)
+			
+         {   PB7_OUT=1;
+             PB6_OUT=0;
+				     PE5_OUT =1;
+             PF4_OUT=1;
+					
+					}
+
+          }
+				 
+				 
+			if(Motordata.MFR==CCW)
+				 {
+				 
+				 
+		       PB7_OUT=0;
+				   PB6_OUT=0;
+          
+         // PB5_OUT=0;
+         // PB4_OUT=0;
+			 if( Motordata.SWhkey.FRstop==0x55)
+				{ PD4_OUT=0;}
+       if( Motordata.SWhkey.FRstop==0xaa)
+				 { PD4_OUT=1;}
+
+
+				 }
+				 
+				 
+				 
+				 
+				 
+				 
+		
+				 }break;
+case 3:{//==电池电量====
+	       
+			 POWER_dis_prc();
+				 
+				
+				 
+				}break;
+case 2:{//===消影======
+         PB7_OUT=0;
+         PB6_OUT=0;
+				 PE5_OUT =0;
+         PF4_OUT=0;
+			
+        
+				 
+				 }break;
+case 4:{//===消影======
+         PB7_OUT=0;
+         PB6_OUT=0;
+				 PE5_OUT =0;
+         PF4_OUT=0;
+			
+        
+				 
+				 }break;
+
+
+
+
+}//switch==end==
+
+
+
+
+
+
+
+}
+
+/***********************************************************
+* 函数名称  : void MCTask_Ready()
+* 参数描述  : 无
+* 返回值    : 无
+* 描述      :     
+***********************************************************/
+void  Disp_error_on()
+{
+
+switch(Motordata.Disstatus)
+{
+	
+	
+	
+	
+	
+	
+case 1:{//==档位显示===
+        
+		
+
+          PB7_OUT=1;
+				  PB6_OUT=1;
+         // PB5_OUT=0;
+         // PB4_OUT=0;
+			   // PC4_OUT=0;
+				
+					
+					
+			
+				 
+		
+	
+				 }break;
+case 3:{//==电池电量====
+	       PB7_OUT=1;
+         PB6_OUT=1;
+				
+				 //PB5_OUT=0;
+        // PB4_OUT=0;
+				// PC4_OUT=0;
+				
+				}break;
+case 2:{//===消影======
+         PB7_OUT=0;
+         PB6_OUT=0;
+				// PB5_OUT=1;
+        // PB4_OUT=1;
+				// PC4_OUT=1;
+        
+				 
+				 }break;
+case 4:{//===消影======
+         PB7_OUT=0;
+         PB6_OUT=0;
+				// PB5_OUT=1;
+        // PB4_OUT=1;
+				// PC4_OUT=1;
+        
+				 
+				 }break;
+
+
+
+
+}//switch==end==
+
+
+
+
+
+
+
+
+}
+
+
+/******************************************
+*
+*
+******************************************/
+void  Disp_error_of()
+{
+
+          PB7_OUT=0;
+				  PB6_OUT=0;
+          //PB5_OUT=0;
+          //PB4_OUT=0;
+			   // PC4_OUT=0;
+}
+
+
+
+void eeprom_openlock()
+{
+
+do
+
+{
+
+FLASH_DUKR = 0xae; // 写入第一个密钥
+
+FLASH_DUKR = 0x56; // 写入第二个密钥
+
+} while((FLASH_IAPSR & 0x08) == 0); // 若解锁未成功，则重新再来
+
+//*p = 0xaa; // 写入第一个字节
+
+}
+/*************************************************
+*
+*
+*
+**************************************************/
+
+void eeprom_w_char()
+{u8 *padr_swbut;
+ u8 *padr_rrstop;
+ padr_rrstop=(u8*)0x4011;
+  *padr_rrstop=0x41;
+
+
+
+}
+
+void eeprom_r_char(char adrx)
+{
+
+
+}
+
+
+
+/********************************************/
+void  GEAR_dis_prc()
+{
+
+
+
+
+}
+
+
+
+/*********************************************/
+void  POWER_dis_prc()
+{
+ if( Motordata.prct.Volt<=380)
+	{ Motordata.BatPower=1;}
+if( Motordata.prct.Volt>380&&Motordata.prct.Volt<=420)
+ {  Motordata.BatPower=2;}
+if( Motordata.prct.Volt>420&&Motordata.prct.Volt<=460)
+	{ Motordata.BatPower=3;}
+if( Motordata.prct.Volt>460)
+ {  Motordata.BatPower=4;}
+ 
+ //===============================
+ switch(Motordata.BatPower)
+ {
+ case  1:{  
+ 
+				 PB7_OUT=0;
+				 PB6_OUT=0;
+				 PE5_OUT =0;
+				 PF4_OUT=0;
+			
+          }break;
+ case  2:{
+				  PB7_OUT=0;
+				 PB6_OUT=1;
+				 PE5_OUT =0;
+				 PF4_OUT=0;
+				
+         }break;
+ case  3:{
+	 
+				 PB7_OUT=0;
+				 PB6_OUT=1;
+				 PE5_OUT =0;
+				 PF4_OUT=1;
+			
+        }break;
+ case  4:{
+				  PB7_OUT=0;
+				  PB6_OUT=1;
+					PE5_OUT =1;
+				  PF4_OUT=1;
+					
+         }break;
+ 
+ 
+ }/**====switch=====  end**/
+
+}
+
+
+
+
+
+

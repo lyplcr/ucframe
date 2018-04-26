@@ -1,15 +1,17 @@
 /**********************************************************
-*name   : platform.h
-*detail : 包含平台编译相关头文件
+*name   : board.h
+*detail : 包含板设相关头文件
 *version&time: v1.0 (2018-4-1)
 *author&team : wang yuan
 ***********************************************************/
 
-#ifndef __PLATFORM_H
-#define __PLATFORM_H
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __BOARD_H
+#define __BOARD_H
+
 
 /* Includes ------------------------------------------------------------------*/
-#include "common.h"
+#include "platform.h"
 
 /*  defines&macro ------------------------------------------------------------*/
 
@@ -19,6 +21,6 @@
 
 /*  functions ----------------------------------------------------------------*/
 
-#endif
 
-/************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
+
+#endif
