@@ -1,37 +1,35 @@
-/*******************************coptright(c)***************************************
-*
-* --------------------  ShenZhen  pace  electronics  co.LTD  -------------------
-*
-*                             BLDC  energy  Team
-*
-*---file info----------------------------------------------------------------------
-*
-*  文件名称:	  inject.c
-*  修改日期：     v1.0
-*
-**********************************************************************************/
+/**********************************************************
+*name   : inject.c
+*detail : 
+*version&time: v1.0 (2018-4-1)
+*author&team : wang yuan
+***********************************************************/
 
-
-#include "public.h"
+/* Includes ------------------------------------------------------------------*/
+#include "motor.h"
+//#include "public.h"
+//#include "adc.h"
+//#include "tim.h"
+//#include "gpio.h"
 #include "param.h"
 #include "mc_driver.h"
 #include "mc_control.h"
-#include "adc.h"
-#include "tim.h"
-#include "gpio.h"
 #include "inject.h"
 
-///*
-s16 inject_table[][]={ {0,0,0},
-                       {0,0,0},
-                       {0,0,0},
-											 {0,0,0},
-											 {0,0,0},
-										 	 {0,0,0}
-										 };
-										 
+
+/*  defines&macro ------------------------------------------------------------*/
+
+/*  typedef ------------------------------------------------------------------*/
+
+/*  variables&constants  -----------------------------------------------------*/
+s16 inject_table[6][3]={ {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} };
 u16  tb[]={0,0,0,0,0,0,0,0,0,0,0};
-////////////////////////////////////////////////
+
+/*  functions ----------------------------------------------------------------*/
+
+
+/************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
+
 //ac
 void InJect_AC_Task(void)
 {
@@ -126,17 +124,10 @@ void InJect_AC_Task(void)
 }
 ///////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-//
 //bc
 void InJect_BC_Task(void)
-{u8 count;
+{
+  u8 count;
  u8 pccount=0;//-------
  u16 collectf[]={0,0,0,0,0,0,0,0,0};
  u16 collectb[]={0,0,0,0,0,0,0,0,0};
@@ -145,8 +136,6 @@ void InJect_BC_Task(void)
 	//Adc_SetUp_ch3();
 	Adc_SetUp_ch(BEMFA_ADC_CH);
 	//Adc_SetUp_ch(CURR_ADC_CH);
-
-	 
 //========================	
 //BC
 	 //送相位-----
@@ -219,22 +208,17 @@ void InJect_BC_Task(void)
 }
 /////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-//
 //ab
 void InJect_AB_Task(void)
-{u8 count;
-u8 pccount=0;//-------
- u16 collectf[]={0,0,0,0,0,0,0,0,0};
- u16 collectb[]={0,0,0,0,0,0,0,0,0};
- s16 colee[]= {0,0,0,0,0,0,0,0,0,0};
+{
+  u8 count;
+  u8 pccount=0;//-------
+  u16 collectf[]={0,0,0,0,0,0,0,0,0};
+  u16 collectb[]={0,0,0,0,0,0,0,0,0};
+  s16 colee[]= {0,0,0,0,0,0,0,0,0,0};
  
      //Adc_SetUp_ch1();
-	 Adc_SetUp_ch(BEMFC_ADC_CH);
+  Adc_SetUp_ch(BEMFC_ADC_CH);
 	 //Adc_SetUp_ch(CURR_ADC_CH);
 
 	 
@@ -312,16 +296,10 @@ u8 pccount=0;//-------
      dlay(WAIT_US_PULSE_OFF_TIME);
 }
 
-
-
-
-
-
-
-
 //
 void InJect_ST_Prc(void)
-{  u8 hps;
+{  
+  u8 hps;
    u16 ab,ca,bc,min; 
 //=============================================
 //---------------识别-------------------------
@@ -685,13 +663,6 @@ void Get_Curr_For_Insert_Pulse(unsigned char step)
 	//WaitUs(TIME_DELAY_FOR_PHASE_OFF);
 //#endif	
 }
-
-
-
-
-
-
-
 
 
 //

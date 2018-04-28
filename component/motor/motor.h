@@ -5,23 +5,28 @@
 *author&team : wang yuan
 ***********************************************************/
 
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MOTOR_H
 #define __MOTOR_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "common.h"
+#include "platform.h"
+#include "param.h"
 
 /*  defines&macro ------------------------------------------------------------*/
+#define BLDC
 
 /*  typedef ------------------------------------------------------------------*/
 typedef struct
 {
   int (*MotorRest)(void);
+  
 } motor_t;
 
 /*  variables&constants  -----------------------------------------------------*/
 
 /*  functions ----------------------------------------------------------------*/
+void MotorInit(void);
 
 #endif
 

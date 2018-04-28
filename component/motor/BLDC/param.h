@@ -13,8 +13,8 @@
 #endif
 
 //#include"stm8s_type.h"
-#include"public.h"
-
+//#include"public.h"
+#include "platform.h"
 
 //方案选择
 //#define PROJ_SST16_194
@@ -408,11 +408,11 @@ extern    collect Injection;
 
 extern         u8 pz_buf;
 
-extern const   halltable[];
-extern const   phtable[];
-extern         bemfchtable[];
-extern         Tphtable[];
-extern const   LPT[];
+extern const uint8_t  halltable[];
+extern const uint8_t  phtable[];
+extern       uint8_t  bemfchtable[];
+extern       uint8_t  Tphtable[];
+extern const uint8_t  LPT[];
 /***********************************************************/
 /***********************************************************/
 //函数声明===================================================

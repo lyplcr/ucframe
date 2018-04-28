@@ -2,7 +2,7 @@
 
 "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\bin\stm8stlink.dll" 
 
-"E:\ucframe\project\bldc_stm8s\E:\ucframe\project\bldc_stm8s\..\..\..\Debug\Exe\BLDC.out" 
+"E:\ucframe\project\bldc_stm8s\Release\Exe\BLDC.out" 
 
 --plugin "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\bin\stm8bat.dll" 
 

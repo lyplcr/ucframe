@@ -16,7 +16,7 @@
                 <debug>1</debug>
                 <option>
                     <name>GenDeviceSelectMenu</name>
-                    <state>UnspecifiedSTM8	STM8 - Unspecified</state>
+                    <state>STM8S903K3	STM8S903K3</state>
                 </option>
                 <option>
                     <name>GenCodeModel</name>
@@ -484,15 +484,15 @@
                 <option>
                     <name>OOCOutputFormat</name>
                     <version>2</version>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OCOutputOverride</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state></state>
+                    <state>BLDC.hex</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -500,7 +500,7 @@
                 </option>
                 <option>
                     <name>OOCObjCopyEnable</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
             </data>
         </settings>
@@ -611,7 +611,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$TOOLKIT_DIR$\config\lnkstm8.icf</state>
+                    <state>$TOOLKIT_DIR$\config\lnkstm8s903k3.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -822,7 +822,7 @@
                 <debug>0</debug>
                 <option>
                     <name>GenDeviceSelectMenu</name>
-                    <state></state>
+                    <state>UnspecifiedSTM8	STM8 - Unspecified</state>
                 </option>
                 <option>
                     <name>GenCodeModel</name>
@@ -866,7 +866,7 @@
                 </option>
                 <option>
                     <name>GenRTConfigPath</name>
-                    <state></state>
+                    <state>$TOOLKIT_DIR$\LIB\dlstm8smn.h</state>
                 </option>
                 <option>
                     <name>GenLibInFormatter</name>
@@ -888,11 +888,11 @@
                 </option>
                 <option>
                     <name>GenStackSize</name>
-                    <state>###Uninitialized###</state>
+                    <state>0x100</state>
                 </option>
                 <option>
                     <name>GenHeapSize</name>
-                    <state>###Uninitialized###</state>
+                    <state>0x100</state>
                 </option>
                 <option>
                     <name>GeneralEnableMisra</name>
@@ -961,12 +961,12 @@
                 </option>
                 <option>
                     <name>IccOptLevelSlave</name>
-                    <state>1</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>IccOptAllowList</name>
                     <version>0</version>
-                    <state>111110</state>
+                    <state>111111</state>
                 </option>
                 <option>
                     <name>IccGenerateDebugInfo</name>
@@ -974,7 +974,7 @@
                 </option>
                 <option>
                     <name>IccOutputFile</name>
-                    <state></state>
+                    <state>$FILE_BNAME$.o</state>
                 </option>
                 <option>
                     <name>IccCodeModel</name>
@@ -994,7 +994,7 @@
                 </option>
                 <option>
                     <name>CCDefines</name>
-                    <state>NDEBUG</state>
+                    <state>STM8S903</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1062,7 +1062,12 @@
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
-                    <state></state>
+                    <state>$PROJ_DIR$</state>
+                    <state>$PROJ_DIR$\board</state>
+                    <state>$PROJ_DIR$\..\..\common</state>
+                    <state>$PROJ_DIR$\..\..\component\motor</state>
+                    <state>$PROJ_DIR$\..\..\component\motor\bldc</state>
+                    <state>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1348,7 +1353,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>###Unitialized###</state>
+                    <state>BLDC.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>
@@ -1412,7 +1417,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>lnk0t.icf</state>
+                    <state>$TOOLKIT_DIR$\config\lnkstm8.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -1476,7 +1481,7 @@
                 </option>
                 <option>
                     <name>IlinkProgramEntryLabel</name>
-                    <state></state>
+                    <state>__iar_program_start</state>
                 </option>
                 <option>
                     <name>DoFill</name>
@@ -1614,10 +1619,16 @@
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc1.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_clk.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_exti.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_iwdg.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim1.c</name>
@@ -1628,7 +1639,56 @@
         <group>
             <name>bldc</name>
             <file>
+                <name>$PROJ_DIR$\..\..\component\motor\BLDC\inject.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\component\motor\BLDC\it.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\component\motor\BLDC\mc_control.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\component\motor\BLDC\mc_driver.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\component\motor\BLDC\mdisply.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\component\motor\motor.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\component\motor\BLDC\mswitch.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\component\motor\BLDC\sys_config.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
             </file>
         </group>
         <group>
@@ -1640,19 +1700,29 @@
                 <name>$PROJ_DIR$\..\..\common\flash.c</name>
                 <excluded>
                     <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
                 </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\common\key.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\common\led.c</name>
                 <excluded>
                     <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
                 </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\common\mathex.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                    <configuration>Release</configuration>
+                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\common\time.c</name>

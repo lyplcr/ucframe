@@ -92,8 +92,8 @@
 * 日期    :  无 2016年   
 ***************************************************************/
 extern     u8 Pcount;
-extern  const poztable[];
-extern  const phztable[];
+extern uint8_t const poztable[];
+extern uint8_t const phztable[];
 
 //===================================
 //系统运行函数=======================

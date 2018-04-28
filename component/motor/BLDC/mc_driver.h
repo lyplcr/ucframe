@@ -17,7 +17,8 @@
 * 参数描述: 无
 * 日期:     
 **************************************************************************************************/
-#include "public.h"
+//#include "public.h"
+#include "common.h"
 void ChangeDuty(u16 pwm_value);
 void change_ph(void);
 u8 GetHall(void);

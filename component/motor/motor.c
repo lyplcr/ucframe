@@ -13,11 +13,23 @@
 /*  typedef ------------------------------------------------------------------*/
 
 /*  variables&constants  -----------------------------------------------------*/
+param Motordata;
 
 /*  functions ----------------------------------------------------------------*/
-int MotorInit( void )
+
+// 
+void MotorReset(void)
 {
-  return 0;
+  
+}
+
+//
+void MotorInit(void)
+{
+  MotorReset();
+  Motordata.station= Ready;
+//  Adc_SetUp_Init();
+  EnIRQ();
 }
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

@@ -45,25 +45,11 @@
 const    showsp[]={0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 void DIS_mode_scan_status()
 {
 switch(Motordata.Disstatus)
 {
-	
-	
+
 case 1:{//==档位显示===
         
 				
@@ -140,21 +126,8 @@ case 4:{//===消影======
          PB6_OUT=0;
 				 PE5_OUT =0;
          PF4_OUT=0;
-			
-        
-				 
 				 }break;
-
-
-
-
 }//switch==end==
-
-
-
-
-
-
 
 }
 
@@ -170,27 +143,12 @@ void  Disp_error_on()
 switch(Motordata.Disstatus)
 {
 	
-	
-	
-	
-	
-	
 case 1:{//==档位显示===
-        
-		
-
           PB7_OUT=1;
 				  PB6_OUT=1;
          // PB5_OUT=0;
          // PB4_OUT=0;
 			   // PC4_OUT=0;
-				
-					
-					
-			
-				 
-		
-	
 				 }break;
 case 3:{//==电池电量====
 	       PB7_OUT=1;
@@ -219,18 +177,7 @@ case 4:{//===消影======
         
 				 
 				 }break;
-
-
-
-
 }//switch==end==
-
-
-
-
-
-
-
 
 }
 
@@ -241,12 +188,11 @@ case 4:{//===消影======
 ******************************************/
 void  Disp_error_of()
 {
-
-          PB7_OUT=0;
-				  PB6_OUT=0;
-          //PB5_OUT=0;
-          //PB4_OUT=0;
-			   // PC4_OUT=0;
+	PB7_OUT=0;
+	PB6_OUT=0;
+	//PB5_OUT=0;
+	//PB4_OUT=0;
+	// PC4_OUT=0;
 }
 
 

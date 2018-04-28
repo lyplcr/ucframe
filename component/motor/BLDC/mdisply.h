@@ -1,4 +1,12 @@
-#include "public.h"
+/**********************************************************
+*name   : main.c
+*detail : 入口主函数
+*version&time: v1.0 (2018-4-1)
+*author&team : wang yuan
+***********************************************************/
+
+/* Includes ------------------------------------------------------------------*/
+#include "platform.h"
 
 
 
@@ -10,7 +18,7 @@
 #define  SW2    PB5_OUT
 
 
-extern  const    showsp[];
+extern  const  uint8_t  showsp[];
 
 void  DIS_mode_scan_status(void);
 void  eeprom_openlock(void);

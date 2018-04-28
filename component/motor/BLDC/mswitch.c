@@ -1,27 +1,26 @@
-/*******************************coptright(c)***************************************
-*
-* --------------------  ShenZhen  pace  electronics  co.LTD  -------------------
-*
-*                             BLDC  energy  Team
-*
-*---file info----------------------------------------------------------------------
-*
-*  文件名称:	 mswitch.c
-*  修改日期：     v1.0
-*  最终版本：     v2.0 
-*  简要描述:      TIME  module init
-**********************************************************************************/
+/**********************************************************
+*name   : mswitch.c
+*detail : 
+*version&time: v1.0 (2018-4-1)
+*author&team : wang yuan
+***********************************************************/
 
-
-#include "gpio.h"
+/* Includes ------------------------------------------------------------------*/
+#include "motor.h"
+//#include "gpio.h"
+//#include "adc.h"
 #include "mswitch.h"
 #include "mc_control.h"
 #include "param.h"
-#include "adc.h"
 #include "mdisply.h"
+
+/*  defines&macro ------------------------------------------------------------*/
+
+/*  typedef ------------------------------------------------------------------*/
+
+/*  variables&constants  -----------------------------------------------------*/
 u16 sw_count=0;
 u8 adc_sflg=0;
-
 const unsigned short EVERY_GRADE_PWM_MAX_TAB[] =
 {
 	0,
@@ -35,7 +34,6 @@ const unsigned short EVERY_GRADE_PWM_MAX_TAB[] =
 	GRADE8_PWM_MAX
 
 };
-
 
 const unsigned short EVERY_GRADE_PWM_REVS_MAX_TAB[] =
 {
@@ -51,17 +49,18 @@ const unsigned short EVERY_GRADE_PWM_REVS_MAX_TAB[] =
 
 };
 
-
 const unsigned short EVERY_GRADE_LIMIT_CURR_TAB[] =
 {
 	0,
 	LIMIT_CURR1_VOLT_ADC,
 	LIMIT_CURR2_VOLT_ADC,
 	LIMIT_CURR3_VOLT_ADC
-
 };
 
+/*  functions ----------------------------------------------------------------*/
 
+
+/************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
 
 
 void MC_Swbut_Check()
@@ -182,7 +181,7 @@ void MC_Swbut_Check()
 
 
 
-Get_sw_fr(void)
+void Get_sw_fr(void)
 {
 	u8 buf;
 	buf=PD_IDR&0x80;
@@ -200,17 +199,8 @@ Get_sw_fr(void)
 
 
 //=============================================
-
-
-
-
-Get_adc_sw(void)
+void Get_adc_sw(void)
 {
-
-
-
-
-
 
 }
 
@@ -220,10 +210,7 @@ void Get_adc_vl(void)
 }
 
 /************************************************/
-
-
-
-Check_switch_onff()
+void Check_switch_onff()
 {
 //--------------------------------------
 	if(Motordata.hopeduty>SDSWITCH_MIN_ON)
@@ -594,16 +581,7 @@ void check_erorr()
 }
 
 
-
-
-
-
-
-
-
-
-
-
+//
 void read_eeprom_vla(void)
 {
 	u8 *padr_sstp;
@@ -645,17 +623,7 @@ void read_eeprom_vla(void)
 
 }
 
-
-
-
-
-
-
-/*************************************************
-*
-*
-*
-**************************************************/
+// 
 void   Motor_ip(void)
 {
 //

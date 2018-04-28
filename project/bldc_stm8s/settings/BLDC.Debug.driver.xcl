@@ -1,6 +1,14 @@
 "-p" 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\config\ddf\iostm8.ddf" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\config\ddf\iostm8s903k3.ddf" 
+
+"--mcuname" 
+
+"STM8S903K3" 
+
+"--verify_download" 
+
+"--erase_memory" 
 
 
 

@@ -1,14 +1,16 @@
 /**********************************************************
-----------------------------------------------------------
-*name:    inject.h  version: v1.0          mcu:  stm8s903
-*sdk:     stvd      author:  hongwei luo   date:    2016
-*detail:  include public head file
-*
+*name   : inject.h
+*detail : 
+*version&time: v1.0 (2018-4-1)
+*author&team : wang yuan
 ***********************************************************/
 
-#include "stm8s903k.h"
-#include "stm8s_type.h"
-#include "stm8_bit.h"
+/* Includes ------------------------------------------------------------------*/
+#include "platform.h"
+
+//#include "stm8s903k.h"
+//#include "stm8s_type.h"
+//#include "stm8_bit.h"
 //========================================================
 
 #define	WAIT_US_PULSE_ON_TIME	16		////16
