@@ -28,13 +28,30 @@ mcu_t mcu;
 #endif
 
 /*  functions ----------------------------------------------------------------*/
+// 
+void CLKInit(void)
+{
+  CLK_DeInit();
+  CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV1);
+}
+
+// 
 void GPIOInit(void)
 {
-  
+  EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOA, EXTI_SENSITIVITY_RISE_FALL);
+  EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOD, EXTI_SENSITIVITY_FALL_ONLY);
+//  EXTI_SetTLISensitivity(EXTI_TLISENSITIVITY_FALL_ONLY);// 最高级别中断?
+
+  GPIO_Init(GPIOA, GPIO_PIN_ALL, GPIO_MODE_IN_PU_NO_IT);
+  GPIO_Init(GPIOB, GPIO_PIN_ALL, GPIO_MODE_IN_PU_NO_IT);
+  GPIO_Init(GPIOC, GPIO_PIN_ALL, GPIO_MODE_OUT_PP_LOW_SLOW);
+  GPIO_Init(GPIOD, GPIO_PIN_ALL, GPIO_MODE_IN_PU_NO_IT);
+  GPIO_Init(GPIOE, GPIO_PIN_ALL, GPIO_MODE_OUT_PP_HIGH_SLOW);
+  GPIO_Init(GPIOF, GPIO_PIN_ALL, GPIO_MODE_OUT_PP_LOW_SLOW);
 }
 
 //
-void TimeInit(void)
+void TimerInit(void)
 {
   
 }
@@ -43,7 +60,7 @@ void TimeInit(void)
 void BoardInit(void)
 {
   GPIOInit();
-  TimeInit();
+  TimerInit();
 }
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

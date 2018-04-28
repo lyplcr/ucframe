@@ -2,7 +2,7 @@ ucframe的目标是建立一个开放兼容标准的嵌入式框架，以节省�
 common文件夹包括一些简单常见的函数结构类对象等
 component文件夹包括一些复杂的组件或者算法，比如文件系统、bldc算法等
 drivers文件夹包括一些常见的外设驱动，比如spiflash等
-middleware文件夹主要包括通用虚拟中间件，比如虚拟文件系统、虚拟操作系统、虚拟gui、虚拟接口等，这部分根据需要实现，用注册的模式？
+middleware文件夹主要包括通用虚拟中间件，比如虚拟文件系统、虚拟操作系统、虚拟gui、虚拟接口等，这部分根据需要实现，用注册的模式？可以放在component里面
 project文件夹包括单片机库函数和自己写的工程
 ucboot文件夹放bootloader或IAP工程
 
@@ -20,15 +20,9 @@ lcd菜单 https://www.amobbs.com/thread-5603220-1-1.html
 IRP(I/O Request Package I/O请求包)
 I/O管理器
 
-
-
-electronic：电子硬件资料相关
-drivers：	各MCU底层库文件
 OSkernel:	嵌入式系统或者一些架构相关的程序
-component；组件 
-middleware：中间件
+component；组件 （可复用的模块，或者其他组件的组成部分）
 module：	这里应该包括USB等接口，常用模块，常用算法，（要不要分开？）
-bin:		可执行命令
 
 
 linux:

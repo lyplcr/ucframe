@@ -1,23 +1,30 @@
-/* Copyright (c) 2018 王元
- * 20180101
- * LED
- */
+/**********************************************************
+*name   : time.h
+*detail : 时间相关函数
+*version&time: v1.0 (2018-4-1)
+*author&team : wang yuan
+***********************************************************/
 
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __TIME_H
 #define __TIME_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "common.h"
 
-/* Exported types ------------------------------------------------------------*/
-/* DATATIME */
+/*  defines&macro ------------------------------------------------------------*/
+
+/*  typedef ------------------------------------------------------------------*/
+typedef enum
+{
+  YEAR, MONTH, WEEK, day, HOUR, INUTE, SECOND, MS, US
+} datatime_t;
+
 typedef struct
 {
   uint8_t year;
   uint8_t month;
   uint8_t week;
-  uint8_t date;
+  uint8_t day;
 } date_t;
 
 typedef struct
@@ -26,26 +33,27 @@ typedef struct
   uint8_t minute;
   uint8_t second;
   uint8_t timer;
-} time_t;
+} clock_t;
 
 typedef struct
 {
-  date_t data;
-  time_t time;
+  date_t date;
+  clock_t clock;
   uint16_t ms;
   uint16_t us;
-//  void (*CreatDataTime)(void);
-  void (*Delay)(uint16_t ms);
-  void (*DatatimeSet)(date_t *d, time_t *t);  
-  void (*RefreshDate)(void);
+  void (*Delayms)(uint16_t ms);
   void (*RefreshTime)(void);
-} datatime_t;
-extern datatime_t datatime;
+  void (*SetTime)(date_t *d, clock_t *c);
+  void (*Alarm)(date_t *d, clock_t *c);
+  void (*Timer)(clock_t c);
+} time_t;
+extern time_t time;
 
-/* Exported constants --------------------------------------------------------*/
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
+/*  variables&constants  -----------------------------------------------------*/
 
+/*  functions ----------------------------------------------------------------*/
 
 #endif
+
+/************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
 

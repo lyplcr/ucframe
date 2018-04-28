@@ -1,34 +1,28 @@
 /**********************************************************
-*name   : main.c
-*detail : 入口主函数
+*name   : motor.h
+*detail : motor模块入口
 *version&time: v1.0 (2018-4-1)
 *author&team : wang yuan
 ***********************************************************/
 
+#ifndef __MOTOR_H
+#define __MOTOR_H
+
 /* Includes ------------------------------------------------------------------*/
-#include "platform.h"
-#include "board.h"
+#include "common.h"
 
 /*  defines&macro ------------------------------------------------------------*/
 
 /*  typedef ------------------------------------------------------------------*/
+typedef struct
+{
+  int (*MotorRest)(void);
+} motor_t;
 
 /*  variables&constants  -----------------------------------------------------*/
 
 /*  functions ----------------------------------------------------------------*/
-int main( void )
-{
-  BoardInit();
-  
-  while (1)
-  {
-    
-  }
-//  return 0;
-}
+
+#endif
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
-
-
-
-

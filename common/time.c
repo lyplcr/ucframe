@@ -13,11 +13,11 @@
 /*  typedef ------------------------------------------------------------------*/
 
 /*  variables&constants  -----------------------------------------------------*/
-datatime_t datatime;
+time_t time;
 
 /*  functions ----------------------------------------------------------------*/
 // 
-void Delay(uint16_t delay)
+void Delayms(uint16_t ms)
 {
 //  uint32_t tickstart = 0U;
   
@@ -28,13 +28,26 @@ void Delay(uint16_t delay)
 }
 
 // 创建注册日期时间
-void CreatDataTime(void)
+void RefreshTime(void)
 {
-//  datatime.DatatimeSet = DatatimeSet;
   
-  datatime.Delay = Delay;
 }
 
+// 
+void SetTime(date_t *d, clock_t *c)
+{
+  time.date.year = d->year;
+  time.date.month = d->month;
+  time.date.day = d->day;
+  time.clock.hour = c->hour;
+}
+
+void TimeInit(void)
+{
+  time.Delayms = Delayms;  
+  time.RefreshTime = RefreshTime;
+  time.SetTime = SetTime;
+}
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
 
 

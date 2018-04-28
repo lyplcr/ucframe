@@ -1,13 +1,12 @@
 /**********************************************************
-*name   : main.c
-*detail : 入口主函数
+*name   : motor.c
+*detail : motor入口主函数
 *version&time: v1.0 (2018-4-1)
 *author&team : wang yuan
 ***********************************************************/
 
 /* Includes ------------------------------------------------------------------*/
-#include "platform.h"
-#include "board.h"
+#include "motor.h"
 
 /*  defines&macro ------------------------------------------------------------*/
 
@@ -16,19 +15,9 @@
 /*  variables&constants  -----------------------------------------------------*/
 
 /*  functions ----------------------------------------------------------------*/
-int main( void )
+int MotorInit( void )
 {
-  BoardInit();
-  
-  while (1)
-  {
-    
-  }
-//  return 0;
+  return 0;
 }
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
-
-
-
-

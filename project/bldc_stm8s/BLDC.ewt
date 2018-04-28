@@ -2103,6 +2103,9 @@
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc1.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_exti.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
         </file>
         <file>
@@ -2113,6 +2116,9 @@
         <name>ucframe</name>
         <group>
             <name>bldc</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\component\motor\motor.c</name>
+            </file>
         </group>
         <group>
             <name>common</name>

@@ -19,10 +19,28 @@
 #define BUTTON_PIN              GPIO_PIN_0
 
 // LED:PC13
+// LED1:PB7; LED2:PB6; SW2:PB5; SW1:PB4; LED4:PE5
 #define LED_PORT        GPIOH
 #define LED_PIN         GPIO_Pin_13
 #define LED_ON()        GPIOC->BRR =LED_PIN
 #define LED_OFF()       GPIOC->BSRR=LED_PIN
+
+// SPEED:PB3 AD按键调速
+
+// PD7:DIR 正反转
+
+// ISENSE:PB2; VDETEC:PB1; T_MOS:PB0
+
+// PC1\PC2\PC3\PC5\PC6\PC7:R\S\T L\H
+// PD3:EBMFR; PD5:EBMFS; PD6:EBMFT
+// PA1\PA2\PA3:U\V\W
+
+// PD0:OCP; 
+
+// PD2:DELAY; 电钻按键，电源开关？
+
+
+
 
 /*  typedef ------------------------------------------------------------------*/
 typedef struct

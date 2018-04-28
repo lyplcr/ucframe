@@ -259,7 +259,8 @@
                     <state>$PROJ_DIR$</state>
                     <state>$PROJ_DIR$\board</state>
                     <state>$PROJ_DIR$\..\..\common</state>
-                    <state>$PROJ_DIR$\..\..\component</state>
+                    <state>$PROJ_DIR$\..\..\component\motor</state>
+                    <state>$PROJ_DIR$\..\..\component\motor\bldc</state>
                     <state>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\inc</state>
                 </option>
                 <option>
@@ -1613,6 +1614,9 @@
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc1.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_exti.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
         </file>
         <file>
@@ -1623,6 +1627,9 @@
         <name>ucframe</name>
         <group>
             <name>bldc</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\component\motor\motor.c</name>
+            </file>
         </group>
         <group>
             <name>common</name>
