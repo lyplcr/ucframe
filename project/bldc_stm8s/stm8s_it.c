@@ -29,6 +29,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8s_it.h"
+#include "motor.h"
 
 /** @addtogroup Template_Project
   * @{
@@ -117,6 +118,8 @@ INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  GPIOA->CR2=0x00;
+  GPIOA->CR2=0x0e; 
 }
 
 /**
@@ -129,6 +132,8 @@ INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  GPIOB->CR2=0x00; 
+  GPIOB->CR2=0xe0;			
 }
 
 /**
@@ -141,6 +146,7 @@ INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  
 }
 
 /**
@@ -153,6 +159,8 @@ INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  GPIOD->CR2=0x00;
+  GPIOD->CR2=0x04;
 }
 
 /**
@@ -229,6 +237,12 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  TIM1->SR1 = 0x00;
+  TIM1->EGR |= 0x01;
+  DisAllPwmOut();
+  Motordata.fault=elvp;
+  Motordata.station=Stop;
+  Motordata.UI.Blink=9;
 }
 
 /**
@@ -249,11 +263,106 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   * @param  None
   * @retval None
   */
- INTERRUPT_HANDLER(TIM5_UPD_OVF_BRK_TRG_IRQHandler, 13)
- {
-  /* In order to detect unexpected events during development,
-     it is recommended to set a breakpoint on the following instruction.
-  */
+INTERRUPT_HANDLER(TIM5_UPD_OVF_BRK_TRG_IRQHandler, 13)
+{
+  TIM5->IER =0x00;
+  TIM5->SR1 = 0x00;
+  
+  Motordata.TRcount++;
+  if(Motordata.TQcount>0)
+  {
+    Motordata.TQcount-=1;
+  }
+  Motordata.UI.Mledcount++;
+  if(Motordata.UI.Mledcount>30)
+  {
+    Motordata.UI.Mledcount=0;
+    Motordata.Disstatus++;
+    if(Motordata.Disstatus==7)
+    {
+      Motordata.Disstatus=1;
+    }
+  }
+  if(Motordata.UI.Blink==0)
+  {
+  // DIS_mode_scan_status();
+    FScan_disply();
+  }
+#if 0
+  switch(Motordata.station)
+    case Ready :
+    {
+      if(ADC_CSR_EOC==0)
+      {
+        Adc_Start();
+      }
+      if( Motordata.Dswitch==MOTOR_ON)
+      {           
+
+      }
+      if( Motordata.Dswitch==MOTOR_OFF)
+      {
+          if(Motordata.SWhkey.TRdelay > 0)
+          {  
+                  
+                  if(Motordata.SWhkey.TRdelay1 > 0)
+                  {
+                          Motordata.SWhkey.TRdelay1--;	
+                  }
+                  else
+                  {
+                          Motordata.SWhkey.TRdelay1 = 2000;	//2500
+                          Motordata.SWhkey.TRdelay--;
+                                          
+                  }
+          }
+          
+          else
+          { 
+                  if(Motordata.SWhkey.TRdelay1 > 0)
+                  {
+                          Motordata.SWhkey.TRdelay1--;	
+                  }
+                  else
+                  {
+                  //PD4_OUT=0;
+                  PD2_OUT=0;		
+                  }
+          }
+      }	
+      break;	
+    case NorRun :    
+      //换向条件符合就检测换向===	
+      if(Motordata.TQcount==0)
+      {     
+            MCTask_NorRun1();	
+      }	
+      break;	
+    case  Stop :   
+      if(ADC_CSR_EOC==0)
+      {
+            Adc_Start();
+      }
+      //if(Motordata.fault==eNO)				
+      if(Motordata.UI.showtime>=4000)
+      {
+            Motordata.UI.showtime=0;
+            Motordata.UI.showcount+=1;
+            if( Motordata.UI.showcount==14)
+            {
+                    Motordata.UI.showcount=Motordata.UI.Blink;			
+                    //	Motordata.UI.Blink					
+            }			 
+    }
+
+    Motordata.UI.showtime++;	 
+    break;
+  }  
+  //-----------------------------------	
+#endif
+  TIM5->CNTRH = 0; 
+  TIM5->CNTRL = 0;
+  TIM5->IER = 0x01;
  }
  
 /**
@@ -458,12 +567,65 @@ INTERRUPT_HANDLER(I2C_IRQHandler, 19)
   * @retval 
   * None
   */
- INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
- {
-    /* In order to detect unexpected events during development,
-       it is recommended to set a breakpoint on the following instruction.
-    */
- }
+#define	START_SLOW_CNT			1////3
+#define	ADJUST_ADD_PWM_WIDTH	1
+INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
+{
+  /* In order to detect unexpected events during development,
+     it is recommended to set a breakpoint on the following instruction.
+  */
+  static unsigned char Start_Slow_Cnt = 0;
+  ADC1->CSR &= (~ADC1_CSR_EOC);      // ADC_CSR_EOC=0;
+
+  switch(Motordata.station)
+  {  
+  case Ready:
+    Getval_prc_updata();
+    break;
+  case NorRun:
+    Getval_prc_updata();
+    Motor_Limit_Curr();
+
+/*			
+			if(Motordata.MFR==CW) 
+			{
+				if(Motordata.outduty<Motordata.hopeduty&&Motordata.outduty< Motordata.UI.Gduty)
+				{  
+					Motordata.outduty++;			 
+				}
+			}
+			
+			if(Motordata.MFR==CCW) 
+			{
+				if(Motordata.outduty<Motordata.hopeduty&&Motordata.outduty< Motordata.UI.Gduty)
+				{  
+					Motordata.outduty++;			 
+				}
+			} 
+*/			
+//pwm adjust
+    if((Motordata.outduty<Motordata.hopeduty)&&(Motordata.outduty< Motordata.UI.Gduty))
+    {  
+      Start_Slow_Cnt ++;
+      if(Start_Slow_Cnt >= START_SLOW_CNT)
+      {
+        //Motordata.outduty++;
+        Motordata.outduty+=ADJUST_ADD_PWM_WIDTH;
+        Start_Slow_Cnt = 0;
+      }
+    }
+    if((Motordata.outduty>Motordata.hopeduty)||(Motordata.outduty>Motordata.UI.Gduty))		//10
+    {
+      //Motordata.outduty=Motordata.hopeduty;
+      Motordata.outduty-=5;
+    }		
+    break;
+  case  Stop :    
+    Getval_prc_updata();
+    break;
+  }
+//  return;
+}
 #endif /* (STM8S208) || (STM8S207) || (STM8AF52Ax) || (STM8AF62Ax) */
 
 #if defined (STM8S903) || defined (STM8AF622x)
@@ -477,6 +639,9 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  TIM6->IER=0x00;
+  TIM6->SR1 =0x00; 	
+  TIM6->IER=0x01;
  }
 #else /* STM8S208 or STM8S207 or STM8S105 or STM8S103 or STM8AF52Ax or STM8AF62Ax or STM8AF626x */
 /**

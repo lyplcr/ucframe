@@ -186,9 +186,9 @@ void Revs_Stop_Handle(void)
 /***********************************************************
 * 函数名称: 开关检测
 ***********************************************************/
-void TS_ch_ph(u8 ky)
+void TS_ch_ph(uint8_t ky)
 { 
-	u8 tsk;
+	uint8_t tsk;
 	ChangeDuty(Motordata.outduty);
 	tsk=halltable[ky];
 	Motordata.test=tsk;
@@ -201,9 +201,9 @@ void TS_ch_ph(u8 ky)
 /***********************************************************
 * 函数名称: 开关检测
 ***********************************************************/
-void TSR_ch_ph(u8 ky)
+void TSR_ch_ph(uint8_t ky)
 { 
-	u8 tsk;
+	uint8_t tsk;
 	ChangeDuty(Motordata.outduty);
 	tsk=halltable[ky];
 	Motordata.mstep=Rphtable[tsk];
@@ -267,12 +267,12 @@ void TS_lpv()
 /*******************************************************
 * 函数名称: 延时程序 
 *********************************************************/
-void	dlay (u16 d)
+void dlay (u16 d)
 {  
-	u16 u,y;
-	u=d;      //1.5us
-	for(y=0;y<u;y++); 
-		  
+  u16 u,y;
+  
+  u=d;      //1.5us
+  for(y=0;y<u;y++); 		  
 }
 		
 //========================================================
@@ -282,7 +282,7 @@ void MCTask_Ready()
 	if( Motordata.Dswitch==MOTOR_ON)
 	{
 		Motordata.UI.Mroller=700;
-		PD2_OUT=1;
+                GPIOD->ODR |= 0x04;     // PD2_OUT=1;
 		Motordata.SWhkey.TRdelay=PWR_DELAY_TIME;
 		Motordata.station=Startup;
 		dlay(30);
@@ -339,7 +339,8 @@ void MCTask_Start()
 		Motordata.INJGPH = Get_Step_ForInsertPulse();
 */
 		Motordata.Flgsw=0;
-		PC_ODR=0xf0;
+                GPIOC->ODR |= 0xf0;     //PC_ODR=0xf0;
+		
 		dlay(100);
 	}
 //-----------------------------
@@ -350,8 +351,8 @@ void MCTask_Start()
 /*
 void MCTask_NorRun()
 {
-	u8  bemf;
-	u8 cbuf;
+	uint8_t  bemf;
+	uint8_t cbuf;
 	bemf=Get_pa_vhl();
 //--获得检测权限--启动检测--
 //====================================================
@@ -576,9 +577,10 @@ void MCTask_NorRun()
 *********************************************************/
 void MCTask_NorRun1()
 {
-	u8  bemf;
-	u8 cbuf;
-	bemf=Get_pa_vhl();
+  uint8_t  bemf;
+  uint8_t cbuf;
+  
+  bemf=Get_pa_vhl();
 //--获得检测权限--启动检测--
 //====================================================
 //PB7_OUT= ~PB7_OUT;
@@ -870,9 +872,8 @@ void Motor_Run(void)
 		case  Startup:
 		{
 //=获得第一步位置==============
-			PC6_OUT=0;
-			PC5_OUT=0;
-			PC7_OUT=0;
+                  GPIOC->ODR &= 0x1f;   // PC6_OUT=0;PC5_OUT=0;PC7_OUT=0;
+			
 			pwm_reset();						 
 			MCTask_Start();	
 //==============================
@@ -915,9 +916,8 @@ void Motor_Run(void)
 					Motordata.station= NorRun;
 					Motordata.SWhkey.KILLrun=5;		 
  //setup ch4----------------
-					TIM1_CCMR4=0x68;
-					TIM1_CCER2_CC4P =1;
-					TIM1_CCER2_CC4E =1;
+                                        TIM1->CCMR4 = 0x68;     // TIM1_CCMR4=0x68;
+                                        TIM1->CCER2 |= 0x30;    // TIM1_CCER2_CC4P =1;TIM1_CCER2_CC4E =1;					
 //-----------------
 					Motordata.outduty=50;
 									//adc  pwm trig -----------
@@ -986,15 +986,16 @@ void Motor_Run(void)
 							 
 				if( Motordata.SWhkey.KILLrun==800)	//800
 				{ 
-					TIM1_CCER2_CC4E =0;
+                                  TIM1->CCER2 &= 0xef;  // TIM1_CCER2_CC4E =0;
+					
 					ChangeDuty(1);
 					DisAllPwmOut();
 //===========================
 //
 #ifdef	FUNC_BREAK_EN
-					PC6_OUT=1;
-                  			PC5_OUT=1;
-					PC7_OUT=1;
+                                        
+                                        GPIOC->ODR |= 0xe0;     // PC6_OUT=1; PC5_OUT=1; PC7_OUT=1;
+					
 #else
 					PC6_OUT=0;
                   			PC5_OUT=0;
@@ -1003,10 +1004,8 @@ void Motor_Run(void)
 					//js170720 dlay (4000);
 
 					dlay (4000);
-
-					PC6_OUT=0;
-                  			PC5_OUT=0;
-					PC7_OUT=0;
+                                        GPIOC->ODR &= 0x1f;     // PC6_OUT=0; PC5_OUT=0; PC7_OUT=0;
+					
 					//dlay (30000);				
 									
 //===========================
@@ -1046,7 +1045,8 @@ void Motor_Run(void)
 
 			if( Motordata.Dswitch==MOTOR_OFF)	
 			{ 
-				TIM1_CCER2_CC4E =0;
+                          TIM1->CCER2 &= 0xef;  // TIM1_CCER2_CC4E =0;
+				
 				ChangeDuty(0);
 				Motordata.Flgsw=0;
 				Motordata.outduty=1;

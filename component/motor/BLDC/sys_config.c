@@ -48,9 +48,7 @@ void interrapt_init(void)
 void  RSET_io()
 {
   Gpio_Init();
-   PC5_OUT=1;
-   PC6_OUT=1;
-   PC7_OUT=1;
+  GPIOC->ODR |= 0x1f;        //PC5_OUT=1;PC6_OUT=1;PC7_OUT=1;
 }
 
 //

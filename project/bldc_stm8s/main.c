@@ -19,7 +19,7 @@ const mcu_t mcu =
 {
   0x12345678,
   16000000,
-  0X000000,
+  0x000000,
   1024*1,
   0X008080,
   1024*8,  
@@ -33,15 +33,14 @@ void UIInit(void)
   Motordata.SWhkey.sakeyflg=0;
   Motordata.SWhkey.SSkey=0;
   Motordata.SWhkey.SWkey=0;
-#if 0
   Adc_Scan_timetrig_init();
   TIM5_Ready_StartCount();
   Adc_Start();
 	 
   Motordata.SWhkey.ONbuf=0;
   Motordata.SWhkey.OFbuf=0;
-  PD4_OUT=0;
-  PD2_OUT=0;
+  GPIOD->ODR &= 0xeb;   // PD4_OUT=0; PD2_OUT=0;
+  
   //Motordata.SWhkey.TRdelay=PWR_DELAY_TIME;
 //==============================
   dlay (50000);
@@ -60,8 +59,7 @@ void UIInit(void)
   }//---------
                                               
   Motordata.UI.MFRch= Motordata.MFR;
-                                              
-  PD2_OUT=1;
+  GPIOD->ODR |= 0x04;   // PD2_OUT=1;
   Motordata.SWhkey.TRdelay=PWR_DELAY_TIME;
   //?§Ø???????????============
   Motordata.prct.clcount=0;
@@ -79,23 +77,23 @@ void UIInit(void)
   #ifdef	PROJ_SST16_195
   Motordata.SWhkey.FRstop=0xaa;
   #endif   
-#endif
 }
 
 // 
 int main( void )
 {
+  uint8_t usx;
+  
   BoardInit();
   LedOn();
-//  MotorInit();
-//  UIInit();
-////  Motordata.Dswitch = MOTOR_OFF;
-//  time.Delayms(500);
+  MotorInit();
+  UIInit();
+  Motordata.Dswitch = MOTOR_OFF;
+  dlay(50000);
   LedOff();
   
   while (1)
-  {    
-#if 0
+  {
     //	MCTask_Start();
     Motor_ip();
     Check_switch_onff();
@@ -114,9 +112,7 @@ int main( void )
     }
 
     Motor_Run();
-#endif
   }
-//  return 0;
 }
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

@@ -6,6 +6,7 @@
 ***********************************************************/
 
 /* Includes ------------------------------------------------------------------*/
+#include "platform.h"
 #include "motor.h"
 //#include "public.h"
 //#include "adc.h"
@@ -22,8 +23,8 @@
 /*  typedef ------------------------------------------------------------------*/
 
 /*  variables&constants  -----------------------------------------------------*/
-s16 inject_table[6][3]={ {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} };
-u16  tb[]={0,0,0,0,0,0,0,0,0,0,0};
+int16_t inject_table[6][3]={ {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} };
+uint16_t  tb[]={0,0,0,0,0,0,0,0,0,0,0};
 
 /*  functions ----------------------------------------------------------------*/
 
@@ -33,37 +34,36 @@ u16  tb[]={0,0,0,0,0,0,0,0,0,0,0};
 //ac
 void InJect_AC_Task(void)
 {
-	u8 count;
-	u8 pccount=0;//------------------------------
-	u16 collectf[]={0,0,0,0,0,0,0,0,0};
-	u16 collectb[]={0,0,0,0,0,0,0,0,0};
- 	s16 colee[]={0,0,0,0,0,0,0,0,0,0};
+  uint8_t count;
+  uint8_t pccount=0;//------------------------------
+  uint16_t collectf[]={0,0,0,0,0,0,0,0,0};
+  uint16_t collectb[]={0,0,0,0,0,0,0,0,0};
+  int16_t colee[]={0,0,0,0,0,0,0,0,0,0};
  
-	//Adc_SetUp_ch2();
-	Adc_SetUp_ch(BEMFB_ADC_CH);
-	 //Adc_SetUp_ch(CURR_ADC_CH);
+  //Adc_SetUp_ch2();
+  Adc_SetUp_ch(BEMFB_ADC_CH);
+  //Adc_SetUp_ch(CURR_ADC_CH);
 	 
 //========================	 
 //送相位-----
 //CA
-	PrcTask_Ph(2);//==
-	dlay(WAIT_US_PULSE_ON_TIME);//====
-	Adc_Start();	
-	//------------------------------------------	 
-	for(pccount=1;pccount<8;)
-	{
-		if( ADC_CSR_EOC==1)	
-		{
-			dlay(WAIT_ADC_SAMPLE_TIME);
-			collectf[pccount]=ADC_DR;
-			tb[pccount]=ADC_DR;
-			pccount++;
-			ADC_CSR_EOC=0;
-			//PD7_OUT=~PD7_OUT;
-			Adc_Start();	
-		}
-	 
-	}
+  PrcTask_Ph(2);//==
+  dlay(WAIT_US_PULSE_ON_TIME);//====
+  Adc_Start();	
+  //------------------------------------------	 
+  for(pccount=1;pccount<8;)
+  {          
+    if((ADC1->CSR&0x80)==1)	// ADC_CSR_EOC
+    {
+      dlay(WAIT_ADC_SAMPLE_TIME);
+      collectf[pccount] = (ADC1->DRH<<8)+ADC1->DRL;            // ADC_DR;
+      tb[pccount] = (ADC1->DRH<<8)+ADC1->DRL;           //ADC_DR;
+      pccount++;
+      ADC1->CSR &= 0x7f;      // ADC_CSR_EOC=0;
+      //PD7_OUT=~PD7_OUT;
+      Adc_Start();	
+    }
+  }
 	
 //-- ------------------------	 
 	//PC_ODR=0x00;
@@ -78,20 +78,20 @@ void InJect_AC_Task(void)
 	Adc_Start();	
 	for(pccount=1;pccount<8;)
 	{
-		if( ADC_CSR_EOC==1)	
+		if((ADC1->CSR&0x80)==1) // ADC_CSR_EOC	
 		{
 			dlay(WAIT_ADC_SAMPLE_TIME);
-			collectb[pccount]=ADC_DR;
-			tb[pccount]=ADC_DR;
+			collectb[pccount] = (ADC1->DRH<<8)+ADC1->DRL ;  // ADC_DR
+			tb[pccount] = (ADC1->DRH<<8)+ADC1->DRL ;        // ADC_DR
 			pccount++;
-			ADC_CSR_EOC=0;
-			PD7_OUT=~PD7_OUT;
+			ADC1->CSR &= 0x7f;      // ADC_CSR_EOC=0;
+                        GPIOD->ODR ^= 0x80;     // PD7_OUT=~PD7_OUT;
 			Adc_Start();	
 		}
 	 
 	}
 //----------------------------------------	
-	PC_ODR=0x00;
+        GPIOC->ODR = 0x00;      // PC_ODR=0x00;
 	Injection.ADC_inj_o = 0;
 	Injection.ADC_inj_n = 0;
 	Injection.ADC_inj_l = 0;
@@ -127,34 +127,34 @@ void InJect_AC_Task(void)
 //bc
 void InJect_BC_Task(void)
 {
-  u8 count;
- u8 pccount=0;//-------
- u16 collectf[]={0,0,0,0,0,0,0,0,0};
- u16 collectb[]={0,0,0,0,0,0,0,0,0};
- s16 colee[]= {0,0,0,0,0,0,0,0,0,0};
+  uint8_t count;
+  uint8_t pccount=0;//-------
+  uint16_t collectf[]={0,0,0,0,0,0,0,0,0};
+  uint16_t collectb[]={0,0,0,0,0,0,0,0,0};
+  int16_t colee[]= {0,0,0,0,0,0,0,0,0,0};
  
-	//Adc_SetUp_ch3();
-	Adc_SetUp_ch(BEMFA_ADC_CH);
-	//Adc_SetUp_ch(CURR_ADC_CH);
+  //Adc_SetUp_ch3();
+  Adc_SetUp_ch(BEMFA_ADC_CH);
+  //Adc_SetUp_ch(CURR_ADC_CH);
 //========================	
 //BC
-	 //送相位-----
-	   PrcTask_Ph(5);
-	  dlay(WAIT_US_PULSE_ON_TIME);
-	   Adc_Start();	
-	//-------------------------	 
-	for(pccount=1;pccount<8;)
-	 {if( ADC_CSR_EOC==1)	
-	   {
-		   dlay(WAIT_ADC_SAMPLE_TIME);
-			 collectf[pccount]=ADC_DR;
-	  	 tb[pccount]=ADC_DR;
-		   pccount++;
-	     ADC_CSR_EOC=0;
-	     Adc_Start();	
-			}
-	 
-	 }
+  //送相位-----
+  PrcTask_Ph(5);
+  dlay(WAIT_US_PULSE_ON_TIME);
+  Adc_Start();	
+  //-------------------------	 
+  for(pccount=1;pccount<8;)
+  {
+    if ( (ADC1->CSR & ADC1_CSR_EOC) == ADC1_CSR_EOC ) // if( ADC_CSR_EOC==1)
+    {
+      dlay(WAIT_ADC_SAMPLE_TIME);
+      collectf[pccount] = (ADC1->DRH<<8)+ADC1->DRL;      // ADC_DR;
+      tb[pccount] = (ADC1->DRH<<8)+ADC1->DRL;   //ADC_DR;
+      pccount++;
+      ADC1->CSR &= (~ADC1_CSR_EOC);     // ADC_CSR_EOC=0;
+      Adc_Start();
+    }
+  }
 //-- ------------------------	 
 	//PC_ODR=0x00;
 	//dlay(WAIT_US_STEP_OFF_TIME);
@@ -163,256 +163,233 @@ void InJect_BC_Task(void)
 
 //========================
 //CB
-	 PrcTask_Ph(6);
-	  dlay(WAIT_US_PULSE_ON_TIME);
-	 Adc_Start();	
-	for(pccount=1;pccount<8;)
-	 {if( ADC_CSR_EOC==1)	
-	   {
-		   dlay(WAIT_ADC_SAMPLE_TIME);
-			 collectb[pccount]=ADC_DR;
-	  	 tb[pccount]=ADC_DR;
-		   pccount++;
-	     ADC_CSR_EOC=0;
-	     Adc_Start();	
-			}
-	 
-	 }
+  PrcTask_Ph(6);
+  dlay(WAIT_US_PULSE_ON_TIME);
+  Adc_Start();	
+  for(pccount=1;pccount<8;)
+  {
+    if ( (ADC1->CSR & ADC1_CSR_EOC) == ADC1_CSR_EOC )   // if( ADC_CSR_EOC==1)
+    {
+      dlay(WAIT_ADC_SAMPLE_TIME);
+      collectb[pccount] = (ADC1->DRH<<8)+ADC1->DRL;     // ADC_DR;
+      tb[pccount] = (ADC1->DRH<<8)+ADC1->DRL;           // ADC_DR;
+      pccount++;
+      ADC1->CSR &= (~ADC1_CSR_EOC);     // ADC_CSR_EOC=0;
+      Adc_Start();	
+    }
+  }
  //--------------------------	
-	PC_ODR=0x00;
-	Injection.ADC_inj_o = 0;
-	Injection.ADC_inj_n = 0;
-	Injection.ADC_inj_l = 0;
-	Injection.ADC_inj_ne = 0;	
+  GPIOC->ODR = 0x00;    // PC_ODR=0x00;
+  Injection.ADC_inj_o = 0;
+  Injection.ADC_inj_n = 0;
+  Injection.ADC_inj_l = 0;
+  Injection.ADC_inj_ne = 0;	
 //----------------------------------------
-	 for(count=1;count<7;count++)
-    {Injection.ADC_inj_o+=collectf[count];
-		 colee[count]=collectf[count]-collectf[count+1];
-		 Injection.ADC_inj_n+= colee[count];
-		}
-      Injection.ADC_inj_o=Injection.ADC_inj_o/6;
-	  	Injection.ADC_inj_n=Injection.ADC_inj_n/6;
-			inject_table[4][0]=Injection.ADC_inj_o;
-			inject_table[4][1]=	Injection.ADC_inj_n;
+  for(count=1;count<7;count++)
+  {
+    Injection.ADC_inj_o+=collectf[count];
+    colee[count]=collectf[count]-collectf[count+1];
+    Injection.ADC_inj_n+= colee[count];
+  }
+  Injection.ADC_inj_o=Injection.ADC_inj_o/6;
+  Injection.ADC_inj_n=Injection.ADC_inj_n/6;
+  inject_table[4][0]=Injection.ADC_inj_o;
+  inject_table[4][1]=Injection.ADC_inj_n;
   //------------------------------------------
-   for(count=1;count<7;count++)
-    { Injection.ADC_inj_l+=collectb[count];
-		  colee[count]=collectb[count]-collectb[count+1];
-		  Injection.ADC_inj_ne+= colee[count];
-		}
-      Injection.ADC_inj_l=Injection.ADC_inj_l/6;
-      Injection.ADC_inj_ne=Injection.ADC_inj_ne/6;
-			inject_table[5][0]=Injection.ADC_inj_l;
-			inject_table[5][1]=Injection.ADC_inj_ne;
-      dlay(WAIT_US_PULSE_OFF_TIME);
+  for(count=1;count<7;count++)
+  { 
+    Injection.ADC_inj_l+=collectb[count];
+    colee[count]=collectb[count]-collectb[count+1];
+    Injection.ADC_inj_ne+= colee[count];
+  }
+  Injection.ADC_inj_l=Injection.ADC_inj_l/6;
+  Injection.ADC_inj_ne=Injection.ADC_inj_ne/6;
+  inject_table[5][0]=Injection.ADC_inj_l;
+  inject_table[5][1]=Injection.ADC_inj_ne;
+  dlay(WAIT_US_PULSE_OFF_TIME);
 }
 /////////////////////////////////////////////////////////////////
 
 //ab
 void InJect_AB_Task(void)
 {
-  u8 count;
-  u8 pccount=0;//-------
-  u16 collectf[]={0,0,0,0,0,0,0,0,0};
-  u16 collectb[]={0,0,0,0,0,0,0,0,0};
-  s16 colee[]= {0,0,0,0,0,0,0,0,0,0};
+  uint8_t count;
+  uint8_t pccount=0;//-------
+  uint16_t collectf[]={0,0,0,0,0,0,0,0,0};
+  uint16_t collectb[]={0,0,0,0,0,0,0,0,0};
+  int16_t colee[]= {0,0,0,0,0,0,0,0,0,0};
  
-     //Adc_SetUp_ch1();
+  //Adc_SetUp_ch1();
   Adc_SetUp_ch(BEMFC_ADC_CH);
-	 //Adc_SetUp_ch(CURR_ADC_CH);
+  //Adc_SetUp_ch(CURR_ADC_CH);
 
 	 
-//========================	 
-	//送相位------------------
+//========================	
+  //送相位------------------
 //AB	
-	PrcTask_Ph(3);
-	dlay(WAIT_US_PULSE_ON_TIME);
-	Adc_Start();	
-	//-------------------------	 
-	for(pccount=1;pccount<8;)
-	 {if( ADC_CSR_EOC==1)	
-	   {
-		  dlay(WAIT_ADC_SAMPLE_TIME);
-			 collectf[pccount]=ADC_DR;
-	  	 tb[pccount]=ADC_DR;
-		   pccount++;
-	     ADC_CSR_EOC=0;
-	     Adc_Start();	
-			}
-	 
-	 }
+  PrcTask_Ph(3);
+  dlay(WAIT_US_PULSE_ON_TIME);
+  Adc_Start();	
+  //-------------------------	 
+  for(pccount=1;pccount<8;)
+  {
+    if ( (ADC1->CSR & ADC1_CSR_EOC) == ADC1_CSR_EOC )   // if( ADC_CSR_EOC==1)	
+    {
+      dlay(WAIT_ADC_SAMPLE_TIME);
+      collectf[pccount] = (ADC1->DRH<<8)+ADC1->DRL;     // ADC_DR;
+      tb[pccount] = (ADC1->DRH<<8)+ADC1->DRL;           // ADC_DR;
+      pccount++;
+      ADC1->CSR &= (~ADC1_CSR_EOC);     // ADC_CSR_EOC=0;
+      Adc_Start();	
+    }
+  }
 //-- ------------------------	 
 	//PC_ODR=0x00;
 	//dlay(WAIT_US_STEP_OFF_TIME);
 //----------------------------
 
-
-
 //========================
 //BA
-	 PrcTask_Ph(4);
-	 dlay(WAIT_US_PULSE_ON_TIME);
-	 Adc_Start();	
-	for(pccount=1;pccount<8;)
-	 {if( ADC_CSR_EOC==1)	
-	   {
-		   dlay(WAIT_ADC_SAMPLE_TIME);
-			 collectb[pccount]=ADC_DR;
-	  	 tb[pccount]=ADC_DR;
-				
-		   pccount++;
-	     ADC_CSR_EOC=0;
-	     Adc_Start();	
-			}
-	 
-	 }
+  PrcTask_Ph(4);
+  dlay(WAIT_US_PULSE_ON_TIME);
+  Adc_Start();	
+  for(pccount=1;pccount<8;)
+  {
+    if ( (ADC1->CSR & ADC1_CSR_EOC) == ADC1_CSR_EOC )   // if( ADC_CSR_EOC==1)	
+    {
+      dlay(WAIT_ADC_SAMPLE_TIME);
+      collectb[pccount] = (ADC1->DRH<<8)+ADC1->DRL;     // ADC_DR;
+      tb[pccount] = (ADC1->DRH<<8)+ADC1->DRL;           // ADC_DR;
+      pccount++;
+      ADC1->CSR &= (~ADC1_CSR_EOC);     // ADC_CSR_EOC=0;
+      Adc_Start();	
+    }
+  }
  //--------------------------	
-	PC_ODR=0x00;
-	Injection.ADC_inj_o = 0;
-	Injection.ADC_inj_n = 0;	
-	Injection.ADC_inj_l = 0;
-	Injection.ADC_inj_ne = 0;
+  GPIOC->ODR = 0x00;    // PC_ODR=0x00;
+  Injection.ADC_inj_o = 0;
+  Injection.ADC_inj_n = 0;	
+  Injection.ADC_inj_l = 0;
+  Injection.ADC_inj_ne = 0;
 //----------------------------------------
-	 for(count=1;count<7;count++)
-    {Injection.ADC_inj_o+=collectf[count];
-		 colee[count]=collectf[count]-collectf[count+1];
-		 Injection.ADC_inj_n+= colee[count];
-		}
-    Injection.ADC_inj_o=Injection.ADC_inj_o/6;
-		Injection.ADC_inj_n=Injection.ADC_inj_n/6;
-		
-		 inject_table[0][0]=Injection.ADC_inj_o;
-		 inject_table[0][1]=Injection.ADC_inj_n;	
+  for(count=1;count<7;count++)
+  {
+    Injection.ADC_inj_o+=collectf[count];
+    colee[count]=collectf[count]-collectf[count+1];
+    Injection.ADC_inj_n+= colee[count];
+  }
+  Injection.ADC_inj_o=Injection.ADC_inj_o/6;
+  Injection.ADC_inj_n=Injection.ADC_inj_n/6;
+  inject_table[0][0]=Injection.ADC_inj_o;
+  inject_table[0][1]=Injection.ADC_inj_n;	
   //------------------------------------------
-   for(count=1;count<7;count++)
-    {Injection.ADC_inj_l+=collectb[count];
-		  colee[count]=collectb[count]-collectb[count+1];
-		 Injection.ADC_inj_ne+= colee[count];
-		}
-    Injection.ADC_inj_l=Injection.ADC_inj_l/6;
-    Injection.ADC_inj_ne=Injection.ADC_inj_ne/6;
-		 inject_table[1][0]= Injection.ADC_inj_l;
-		 inject_table[1][1]=Injection.ADC_inj_ne;
-     dlay(WAIT_US_PULSE_OFF_TIME);
+  for(count=1;count<7;count++)
+  {
+    Injection.ADC_inj_l+=collectb[count];
+    colee[count]=collectb[count]-collectb[count+1];
+    Injection.ADC_inj_ne+= colee[count];
+  }
+  Injection.ADC_inj_l=Injection.ADC_inj_l/6;
+  Injection.ADC_inj_ne=Injection.ADC_inj_ne/6;
+  inject_table[1][0]= Injection.ADC_inj_l;
+  inject_table[1][1]=Injection.ADC_inj_ne;
+  dlay(WAIT_US_PULSE_OFF_TIME);
 }
 
 //
 void InJect_ST_Prc(void)
-{  
-  u8 hps;
-   u16 ab,ca,bc,min; 
+{ 
+  uint8_t hps;
+  uint16_t ab,ca,bc,min; 
+  
 //=============================================
 //---------------识别-------------------------
- if(inject_table[0][0]>inject_table[1][0])
-    {
-		 ab=inject_table[0][0]-inject_table[1][0];
-	  inject_table[0][2]=6;
-		 
-	 }
- else
-   {
-     ab=inject_table[1][0]-inject_table[0][0];
-		  inject_table[0][2]=4;
-		 
-   }
+  if(inject_table[0][0]>inject_table[1][0])
+  {
+    ab=inject_table[0][0]-inject_table[1][0];
+    inject_table[0][2]=6;
+  }
+  else
+  {
+    ab=inject_table[1][0]-inject_table[0][0];
+    inject_table[0][2]=4;
+  }
 	//============================================== 
-if(inject_table[2][0]>inject_table[3][0])
-   {
-		 ca=inject_table[2][0]-inject_table[3][0];
-	  inject_table[2][2]=6;
-}
- else
-   {
-     ca=inject_table[3][0]-inject_table[2][0];
-		inject_table[2][2]=4;
-   }	 
+  if(inject_table[2][0]>inject_table[3][0])
+  {
+    ca=inject_table[2][0]-inject_table[3][0];
+    inject_table[2][2]=6;
+  }
+  else
+  {
+    ca=inject_table[3][0]-inject_table[2][0];
+    inject_table[2][2]=4;
+  }	 
 //================================================	 
-if(inject_table[4][0]>inject_table[5][0])
-   {
-		 bc=inject_table[4][0]-inject_table[5][0];
-		  inject_table[4][2]=6;
-	 }
- else
-   {
+  if(inject_table[4][0]>inject_table[5][0])
+  {
+    bc=inject_table[4][0]-inject_table[5][0];
+    inject_table[4][2]=6;
+  }
+  else
+  {
     bc=inject_table[5][0]-inject_table[4][0];
-		 inject_table[4][2]=4;
-   }
+    inject_table[4][2]=4;
+  }
 //===============================================
 //--------------一段识别-------------------------
-hps=0;
+  hps=0;
 
 
 //====================================================
-if(inject_table[0][2]==6)
-{
- hps=hps|0x01;
-}
-if(inject_table[2][2]==6)
-{
- hps=hps|0x02;
-}
-if(inject_table[4][2]==6)
-{
- hps=hps|0x04;
-}
+  if(inject_table[0][2]==6)
+  {
+    hps=hps|0x01;
+  }
+  if(inject_table[2][2]==6)
+  {
+    hps=hps|0x02;
+  }
+  if(inject_table[4][2]==6)
+  {
+    hps=hps|0x04;
+  }
 
 //=================================
-switch(hps)
-{
-case 0x01:{ 
-             Motordata.INJGPH=1;
-						
-	}break;
-
-case 0x02:{  
-              Motordata.INJGPH=2;
-           
-					 
-					 }break;
-
-case 0x04:{ 
-            Motordata.INJGPH=3;
-
-
-
-            }break;
+  switch(hps)
+  {
+  case 0x01:
+    { 
+      Motordata.INJGPH=1;
+    }break;
+  case 0x02:
+    {  
+      Motordata.INJGPH=2;
+    }break;
+  case 0x04:
+    { 
+      Motordata.INJGPH=3;
+    }break;
 //===================================
-
-case 0x03:{
-              Motordata.INJGPH=4;
-
-            }break;//ACSUN
-
-case 0x05:{
-            Motordata.INJGPH=5;
-						
-					}break;//ABSHUN
-
-case 0x06:{
-           
-					 Motordata.INJGPH=6;
-					 }break;//BCSUN
-							 
-							 
-							 
-		default:{
-	           Motordata.INJGPH=0;
-						  
-	              
-			        }	break;				 
-							 
-							 
-							 
+  case 0x03:
+    {
+      Motordata.INJGPH=4;
+    }break;//ACSUN
+  case 0x05:
+    {
+      Motordata.INJGPH=5;
+    }break;//ABSHUN
+  case 0x06:
+    {
+      Motordata.INJGPH=6;
+    }break;//BCSUN
+  default:{
+    Motordata.INJGPH=0;
+  } break;							 
 }
 
 //====================================================	
 //--------------二段识别------------------------------	
-
- 
- 
- 
-
- 
          
 }
 

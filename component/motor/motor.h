@@ -11,7 +11,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "platform.h"
+#include "board.h"
 #include "param.h"
+#include "mc_control.h"
+#include "mdisply.h"
+#include "mswitch.h"
 
 /*  defines&macro ------------------------------------------------------------*/
 #define BLDC
@@ -27,7 +31,7 @@ typedef struct
 
 /*  functions ----------------------------------------------------------------*/
 void MotorInit(void);
-
+void FScan_disply(void);
 #endif
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

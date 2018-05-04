@@ -17,12 +17,6 @@
 
 /*  functions ----------------------------------------------------------------*/
 // 
-void SysRest(void)
-{
-  DisIRQ();
-}
-
-// 
 void CLKInit(void)
 {
   CLK_DeInit();
@@ -130,31 +124,44 @@ Channel 1, 2,3 and 4 Configuration in PWM mode
 //
 void Timer5Init(void)
 {
-  TIM5->IER=0x00;
-//  TIM5->EGR_UG=1;
-  TIM5->PSCR=0x03;//0xfc;// psc=64分频2的n次方  psr=7 2^7  8us  b`128
-  TIM5->ARRH=0x00;
-  TIM5->ARRL=0x01;
-  TIM5->SR1=0x00;// clear int flag
-  TIM5->CR1=0x01;//0x84;//URS 只有计数器溢出 产生中断。
-  TIM5->CR2=0x00;
-  TIM5->SMCR=0x00;
-  TIM5->IER=0x01;// only update event
+  TIM5->IER = 0x00;
+  TIM5->EGR |= 1;       //  TIM5->EGR_UG=1; 
+  TIM5->PSCR = 0x03;    //0xfc;// psc=64分频2的n次方  psr=7 2^7  8us  b`128
+  TIM5->ARRH = 0x00;
+  TIM5->ARRL = 0x01;
+  TIM5->SR1 = 0x00;     // clear int flag
+  TIM5->CR1 = 0x01;     //0x84;//URS 只有计数器溢出 产生中断。
+  TIM5->CR2 = 0x00;
+  TIM5->SMCR = 0x00;
+  TIM5->IER = 0x01;     // only update event
 }
 
 //
 void Timer6Init(void)
 {
-//  TIM6->SR=0x00;
-//  TIM6->SMCR=0x00;// 从模式 计数时钟来自TIM 更新事件
-//  TIM6->CR1=0x04;// only ov event 
-//  TIM6->IER_UIE=1;
-//  // TIM6->IER_TIE=1;////---------
-//  TIM6->PSCR=0x07;//
-//  TIM6->ARR=0xff;
-//  TIM6->EGR_UG=1;
-//  TIM6->CR1_CEN=1;
-//  TIM6->IER=0x01;
+  TIM6->SR1 = 0x00;     // 状态标志位清零
+  TIM6->SMCR = 0x00;    // 从模式 计数时钟来自TIM 更新事件
+  TIM6->CR1 = 0x04;     // only ov event 
+  TIM6->IER |= 0X01;    //  TIM6->IER_UIE=1;
+  // TIM6->IER_TIE=1;   ////---------
+  TIM6->PSCR = 0x07;    // 预分频寄存器
+  TIM6->ARR = 0xff;
+  TIM6->EGR |= 0x01;    // TIM6->EGR_UG=1;
+  TIM6->CR1 |= 0x01;    // TIM6->CR1_CEN=1;
+  TIM6->IER = 0x01;
+}
+
+void Timer5Start(uint16_t arr)
+{
+  TIM5->ARRH = (uint8_t)(arr<<8);
+  TIM5->ARRL = (uint8_t)arr;
+  TIM5->CR1 |= 0x01;
+}
+void Timer5Stop(void)
+{
+  TIM5->ARRH = 0;
+  TIM5->ARRL = 0;
+  TIM5->CR1 &= 0xfe;
 }
 
 //
@@ -173,14 +180,25 @@ void LedOff(void)
 //
 void BoardInit(void)
 {
-  SysRest();
+  
   TimeInit();
+    
   CLKInit();
-  GPIOInit();
-  ADCInit();
-  Timer1Init();
-  Timer5Init();
-  Timer6Init();
+  Gpio_interruput_Init();
+  DisIRQ();
+  Gpio_Init();
+  GPIOB->ODR &= 0x3f;
+  GPIOE->ODR &= 0xdf;
+  GPIOF->ODR &= 0xef;
+  PWM_INIT();
+  TIM5_Conf();
+  Tim6Init();
+//  ADCInit();
+//  Timer1Init();
+//  Timer5Init();
+//  Timer6Init();       // 没用到？
+  TIM5_StartCount();
+  EnIRQ();
 }
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

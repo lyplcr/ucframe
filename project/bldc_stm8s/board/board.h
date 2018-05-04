@@ -12,6 +12,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "platform.h"
+#include "gpio.h"
+#include "adc.h"
+#include "tim.h"
 
 /*  defines&macro ------------------------------------------------------------*/
 // BUTTON/KEY SWIM
@@ -67,8 +70,17 @@
 #define DELAY_PORT      GPIOD
 #define DELAY_PIN       GPIO_Pin_2
 
-
+// TIM
 #define PWM_PERIOD  (0x0500-1)  // (0x0200-1)
+// ADC
+#define	BEMFA_ADC_CH		4
+#define	BEMFB_ADC_CH		5
+#define	BEMFC_ADC_CH		6
+#define	CURR_ADC_CH		2
+#define	CURR_CHANEL	2
+#define	BEMFA_CHANEL	4
+#define	BEMFB_CHANEL	5
+#define	BEMFC_CHANEL	6
 
 /*  typedef ------------------------------------------------------------------*/
 

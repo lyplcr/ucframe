@@ -2126,9 +2126,6 @@
                 <name>$PROJ_DIR$\..\..\component\motor\BLDC\inject.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\component\motor\BLDC\it.c</name>
-            </file>
-            <file>
                 <name>$PROJ_DIR$\..\..\component\motor\BLDC\mc_control.c</name>
             </file>
             <file>
@@ -2170,12 +2167,21 @@
         </group>
     </group>
     <file>
+        <name>$PROJ_DIR$\board\adc.c</name>
+    </file>
+    <file>
         <name>$PROJ_DIR$\board\board.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\board\gpio.c</name>
     </file>
     <file>
         <name>$PROJ_DIR$\main.c</name>
     </file>
     <file>
         <name>$PROJ_DIR$\stm8s_it.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\board\Tim.c</name>
     </file>
 </project>

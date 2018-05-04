@@ -1,16 +1,13 @@
 /**********************************************************
-*name:      param.h
-*version:   v2.0
-*mcu:       903k3
-*sdk:       stvd
-*detail:    data param
-*author:    hongwei luo
-*date:      2016-4-6
+*name   : main.c
+*detail : 入口主函数
+*version&time: v1.0 (2018-4-1)
+*author&team : wang yuan
 ***********************************************************/
 
 #ifndef _PARAM_H_
 #define _PARAM_H_
-#endif
+
 
 //#include"stm8s_type.h"
 //#include"public.h"
@@ -232,17 +229,17 @@
 *------------- data typedef----------------------------
 *******************************************************/
 //状态机的状态值定义，枚举========================
-typedef  enum  mstate
+typedef  enum mstate
 {
-	Checkme=1,
-	Ready=2,
-	Startup=3,
-	StartRun=4,
-	NorRun=5,
-	Fause=6,
-	Brake=7,
-	Stop=8
-}mstate;
+  Checkme=1,
+  Ready=2,
+  Startup=3,
+  StartRun=4,
+  NorRun=5,
+  Fause=6,
+  Brake=7,
+  Stop=8
+} mstate;
 
 /**********************************************************/
 //定义一个结构体数据类型，主要用于存储adc相关数据==========
@@ -251,16 +248,16 @@ typedef  enum  mstate
 //定义一个结构体数据类型，用于系统运行的主要参数存储========
 typedef  struct collect
 {
-//-----------------------
-	u16 ADC_inj_o;
-	u16 ADC_inj_l;
-	s16 ADC_inj_n;
-	s16 ADC_inj_ne;
-//-----------------------
-	u8  incount; 
-	u16 chsptime;
-	u8 smcount;
-}collect;			
+  //-----------------------
+  u16 ADC_inj_o;
+  u16 ADC_inj_l;
+  s16 ADC_inj_n;
+  s16 ADC_inj_ne;
+  //-----------------------
+  u8  incount; 
+  u16 chsptime;
+  u8 smcount;
+} collect;			
 
 
 
@@ -416,3 +413,5 @@ extern const uint8_t  LPT[];
 /***********************************************************/
 /***********************************************************/
 //函数声明===================================================
+
+#endif

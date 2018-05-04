@@ -10,13 +10,29 @@
 
 
 
-#define  LED1   PB7_OUT
-#define  LED2   PB6_OUT
-#define  LED3   PF4_OUT
-#define  LED4   PE5_OUT
-#define  SW1    PB4_OUT
-#define  SW2    PB5_OUT
+//#define  LED1   PB7_OUT
+#define LED1L() GPIOB->ODR &= 0x7f
+#define LED1H() GPIOB->ODR |= 0x80
 
+//#define  LED2   PB6_OUT
+#define LED2L() GPIOB->ODR &= 0xbf
+#define LED2H() GPIOB->ODR |= 0x40
+
+//#define  LED3   PF4_OUT
+#define LED3L() GPIOF->ODR &= 0xef
+#define LED3H() GPIOF->ODR |= 0x10
+
+//#define  LED4   PE5_OUT
+#define LED4L() GPIOF->ODR &= 0xdf
+#define LED4H() GPIOE->ODR |= 0x20
+
+//#define  SW1    PB4_OUT
+#define SW1L() GPIOB->ODR &= 0xef
+#define SW1H() GPIOB->ODR |= 0x10
+
+//#define  SW2    PB5_OUT
+#define SW2L() GPIOB->ODR &= 0xdf
+#define SW2H() GPIOB->ODR |= 0x20
 
 extern  const  uint8_t  showsp[];
 

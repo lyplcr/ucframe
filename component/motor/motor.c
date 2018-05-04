@@ -14,7 +14,7 @@
 
 /*  variables&constants  -----------------------------------------------------*/
 param Motordata;
-
+collect Injection;
 /*  functions ----------------------------------------------------------------*/
 
 // 
@@ -32,4 +32,6 @@ void MotorInit(void)
   EnIRQ();
 }
 
+//void FScan_disply(void)
+//{}
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

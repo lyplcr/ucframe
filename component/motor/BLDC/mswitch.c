@@ -20,7 +20,7 @@
 
 /*  variables&constants  -----------------------------------------------------*/
 u16 sw_count=0;
-u8 adc_sflg=0;
+uint8_t adc_sflg=0;
 const unsigned short EVERY_GRADE_PWM_MAX_TAB[] =
 {
 	0,
@@ -65,9 +65,9 @@ const unsigned short EVERY_GRADE_LIMIT_CURR_TAB[] =
 
 void MC_Swbut_Check()
 {
-	u8 readkey=0;
-	u8 *padr_rrstop;	
-	u8 kxc;
+	uint8_t readkey=0;
+	uint8_t *padr_rrstop;	
+	uint8_t kxc;
 //===getadc switch======
 	sw_count++;
 	if(sw_count>=100)
@@ -94,9 +94,10 @@ void MC_Swbut_Check()
 					//Motordata.SWhkey.FRstop = 0xaa;
 //														 							   
 					eeprom_openlock();
-					padr_rrstop=(char *)0x4022;
+					padr_rrstop=(uint8_t *)0x4022;
 					*padr_rrstop=Motordata.SWhkey.FRstop;
-					FLASH_IAPSR &= (u8)0xF7;
+                                        FLASH->IAPSR &= (uint8_t)0xf7;  // FLASH_IAPSR &= (uint8_t)0xF7;
+					
 				}		
 			}																				
 		}
@@ -146,9 +147,10 @@ void MC_Swbut_Check()
 					}
 					*/
 					eeprom_openlock();
-                              	padr_rrstop=(char *)0x4028;
+                              	padr_rrstop=(uint8_t *)0x4028;
                              	*padr_rrstop=Motordata.SWhkey.Mgear;
-					FLASH_IAPSR &= (u8)0xF7;
+                                FLASH->IAPSR &= (uint8_t)0xf7;  // FLASH_IAPSR &= (uint8_t)0xF7;
+					
 				}	
 //one key two function
 #ifdef	PROJ_SST16_195
@@ -159,9 +161,10 @@ void MC_Swbut_Check()
 					Motordata.SWhkey.FRstop=~Motordata.SWhkey.FRstop;
 //														 							   
 					eeprom_openlock();
-					padr_rrstop=(char *)0x4022;
+					padr_rrstop=(uint8_t *)0x4022;
 					*padr_rrstop=Motordata.SWhkey.FRstop;
-					FLASH_IAPSR &= (u8)0xF7;
+                                        FLASH->IAPSR &= (uint8_t)0xf7;  // FLASH_IAPSR &= (uint8_t)0xF7;
+					
 				}
 
 #endif				
@@ -178,23 +181,20 @@ void MC_Swbut_Check()
 }//func--end--------------------------
 //=====================================
 
-
-
-
-void Get_sw_fr(void)
+uint8_t Get_sw_fr(void)
 {
-	u8 buf;
-	buf=PD_IDR&0x80;
-	if(buf==0)
-	{
-		return(0);
-	}
-	else
-	{
-		return(1);
-	}
-
-	
+  uint8_t buf;
+  
+  buf = GPIOD->IDR & 0x80;      // buf=PD_IDR&0x80;
+        
+  if (buf==0)
+  {
+    return(0);
+  }
+  else
+  {
+    return(1);
+  }	
 }
 
 
@@ -206,7 +206,7 @@ void Get_adc_sw(void)
 
 void Get_adc_vl(void)
 {
- 	Motordata.hopeduty=ADC_DR;
+  Motordata.hopeduty = (ADC1->DRH<<8)+ADC1->DRL;        // Motordata.hopeduty=ADC_DR;
 }
 
 /************************************************/
@@ -584,11 +584,11 @@ void check_erorr()
 //
 void read_eeprom_vla(void)
 {
-	u8 *padr_sstp;
+  uint8_t *padr_sstp;
 		 
 //		
 	eeprom_openlock();
-	padr_sstp=(char *)0x4022;
+	padr_sstp=(uint8_t *)0x4022;
 
 	Motordata.SWhkey.FRstop= *padr_sstp;
 	if((Motordata.SWhkey.FRstop != 0XAA)&&(Motordata.SWhkey.FRstop != 0X55))
@@ -596,7 +596,7 @@ void read_eeprom_vla(void)
 		Motordata.SWhkey.FRstop = 0XAA;
 	}
 													 
-	padr_sstp=(char *)0x4028;												 
+	padr_sstp=(uint8_t *)0x4028;												 
 															 
 	Motordata.SWhkey.Mgear= *padr_sstp;
 	
@@ -614,13 +614,7 @@ void read_eeprom_vla(void)
 	}
 	Motordata.UI.Gduty= EVERY_GRADE_PWM_MAX_TAB[Motordata.SWhkey.Mgear];
 ///////////////////////modify by goldjun//////////////////////////
-
-															 
-	FLASH_IAPSR &= (u8)0xF7;
-															 
-
-
-
+        FLASH->IAPSR &= (uint8_t)0xf7;  // FLASH_IAPSR &= (uint8_t)0xF7;
 }
 
 // 
