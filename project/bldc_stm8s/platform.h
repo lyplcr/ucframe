@@ -51,6 +51,7 @@ extern const mcu_t mcu;
 /*  variables&constants  -----------------------------------------------------*/
 
 /*  functions ----------------------------------------------------------------*/
+extern void PlatfrmInit(void);
 
 #endif
 

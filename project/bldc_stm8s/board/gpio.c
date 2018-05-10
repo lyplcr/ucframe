@@ -18,27 +18,28 @@ void Gpio_interruput_Init(void);
 // 
 void Gpio_Init(void)
 {
+  // 中断输入 UVW三相换相状态
   GPIOA->DDR = 0x00;
   GPIOA->CR1 = 0xff;
-  
+  // 低四位模拟输入，检测电流电压和速度，高四位LED
   GPIOB->DDR = 0xf0;
   GPIOB->CR1 = 0xf0;
   GPIOB->CR2 = 0x00;
-  
+  // mos管开关，三相输出
   GPIOC->DDR = 0xff;
   GPIOC->CR1 = 0xff;
   GPIOC->CR2 = 0x00;
-  
+  // PD2 DELAY输出，其他输入，PD1 led上拉输入，PD7 dir 上拉输入
   GPIOD->DDR = 0x14;
   GPIOD->CR1 = 0x96;
   GPIOD->CR2 = 0x00;
   GPIOD->ODR &= 0xef;
-  
+  // LED4
   GPIOE->DDR = 0xff;
   GPIOE->CR1 = 0xff;
   GPIOE->CR2 = 0x00;
   GPIOE->ODR = 0xf0;
-  
+  // LED3
   GPIOF->DDR = 0xff;
   GPIOF->CR1 = 0xff;
   GPIOF->CR2 = 0x00;
@@ -48,21 +49,21 @@ void Gpio_Init(void)
 // 
 void Gpio_interruput_Init(void)
 {
-  EXTI->CR1 = 0x83;     // EXTI_CR1=0x83;
+  EXTI->CR1 = 0x83;     // PD下降沿、PA上下降沿中断（UVW）
 }
 
 //
-void Gpio_pulse(u8 phz)
+void Gpio_pulse(uint8_t phz)
 {
-  u8 sph;
+  uint8_t sph;
   
   sph=phz;
 }
 
 // 
-void PrcTask_Ph(u8 phx)
+void PrcTask_Ph(uint8_t phx)
 {
-  u8 phk;
+  uint8_t phk;
   phk=phx;
   //AC	
   if(phk==1)

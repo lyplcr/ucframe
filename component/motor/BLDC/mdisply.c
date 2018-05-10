@@ -123,7 +123,7 @@ void FScan_led4()
 
 
 #ifdef	PROJ_SST17_1A4
-      if( Motordata.SWhkey.Mgear==3)		////>=3////==2
+      if( Motordata.SWhkey.gear==3)		////>=3////==2
       {	
         LED1H();        // LED1=1;			//H
       }
@@ -258,7 +258,7 @@ void FScan_sw1()
 
 
 #ifdef	PROJ_SST17_1A4
-  if(Motordata.SWhkey.Mgear==2)		//>=////==
+  if(Motordata.SWhkey.gear==2)		//>=////==
   {
     LED1H();    // LED1=1;		//M	//
   }	
@@ -377,7 +377,7 @@ void FScan_sw2()
 #endif
 
 #ifdef	PROJ_SST17_1A4	
-        if( Motordata.SWhkey.Mgear==1)	//>=	////==
+        if( Motordata.SWhkey.gear==1)	//>=	////==
         {	 
           LED1H();      // LED1=1;			//L
         } 
@@ -472,33 +472,25 @@ void FScan_disply()
 //
 void  Disp_error_on()
 {
-//
   switch(Motordata.Disstatus)
   {
     case 1:
     case 3:	
-    case 5:	
-    {
+    case 5:
       FScan_fon();
-    }break;
-    //
+      break;
     case 2:
     case 4:	
     case 6:	
-    {
       FScan_fof();
-    }break;
+      break;
   }
 }
 
-
-/******************************************
-*
-*
-******************************************/
+//
 void  Disp_error_of()
 {
-         FScan_fof();				 
+  FScan_fof();				 
 }
 
 void eeprom_openlock()

@@ -8,8 +8,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "platform.h"
 
-
-
 //#define  LED1   PB7_OUT
 #define LED1L() GPIOB->ODR &= 0x7f
 #define LED1H() GPIOB->ODR |= 0x80
@@ -36,6 +34,7 @@
 
 extern  const  uint8_t  showsp[];
 
+/*  functions ----------------------------------------------------------------*/
 void  DIS_mode_scan_status(void);
 void  eeprom_openlock(void);
 void  eeprom_w_char(void);
@@ -48,3 +47,5 @@ void  FScan_fon(void);
 void  FScan_led4(void);
 void  FScan_sw1(void);
 void  FScan_sw2(void);
+
+/************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

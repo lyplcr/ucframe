@@ -1,6 +1,6 @@
 /**********************************************************
-*name   : main.c
-*detail : 入口主函数
+*name   : 
+*detail : 
 *version&time: v1.0 (2018-4-1)
 *author&team : wang yuan
 ***********************************************************/
@@ -30,6 +30,7 @@ void GPIOInit(void)
   EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOA, EXTI_SENSITIVITY_RISE_FALL);
   EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOD, EXTI_SENSITIVITY_FALL_ONLY);
 //  EXTI_SetTLISensitivity(EXTI_TLISENSITIVITY_FALL_ONLY);// 最高级别中断?
+  //  GPIO_Init(GPIOA, GPIO_PIN_ALL, GPIO_MODE_IN_PU_NO_IT);        // 
   GPIOA->DDR = 0x00;
   GPIOA->CR1 = 0xff;
   
@@ -55,14 +56,6 @@ void GPIOInit(void)
   GPIOF->CR1 = 0xff;
   GPIOF->CR2 = 0x00;
   GPIOF->ODR = 0x00;
-//  GPIO_Init(GPIOA, GPIO_PIN_ALL, GPIO_MODE_IN_PU_NO_IT);        // 上拉输入，后面配置中断
-//  GPIO_Init(GPIOB, GPIO_PIN_LNIB, GPIO_MODE_IN_FL_NO_IT);       // 浮空输入
-//  GPIO_Init(GPIOB, GPIO_PIN_HNIB, GPIO_MODE_OUT_PP_LOW_SLOW);   // 推挽输出，2M
-//  GPIO_Init(GPIOC, GPIO_PIN_ALL, GPIO_MODE_OUT_PP_LOW_SLOW);    // 推挽输出，2M
-//  GPIO_Init(GPIOD, GPIO_PIN_ALL, GPIO_MODE_IN_PU_NO_IT);
-//  GPIO_Init(GPIOD, (GPIO_Pin_TypeDef)(GPIO_PIN_2|GPIO_PIN_4), GPIO_MODE_OUT_PP_LOW_FAST);
-//  GPIO_Init(GPIOE, GPIO_PIN_ALL, GPIO_MODE_OUT_PP_HIGH_SLOW);
-//  GPIO_Init(GPIOF, GPIO_PIN_ALL, GPIO_MODE_OUT_PP_LOW_SLOW);
 }
 
 //
@@ -180,12 +173,9 @@ void LedOff(void)
 //
 void BoardInit(void)
 {
-  
-  TimeInit();
-    
   CLKInit();
   Gpio_interruput_Init();
-  DisIRQ();
+  DisIRQ();     sim();
   Gpio_Init();
   GPIOB->ODR &= 0x3f;
   GPIOE->ODR &= 0xdf;
@@ -193,12 +183,8 @@ void BoardInit(void)
   PWM_INIT();
   TIM5_Conf();
   Tim6Init();
-//  ADCInit();
-//  Timer1Init();
-//  Timer5Init();
-//  Timer6Init();       // 没用到？
   TIM5_StartCount();
-  EnIRQ();
+  EnIRQ();      rim();
 }
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/

@@ -263,11 +263,11 @@ void bskill_run()
 {
   static unsigned short	BreakCnt = 0;
   
-  Motordata.UI.BKcount+=1;
+  Motordata.UI.bkcount += 1;
   DisAllPwmOut();
 	
 #ifdef	FUNC_BREAK_EN
-  if( Motordata.UI.BKcount<116)
+  if( Motordata.UI.bkcount < 116)
   {
     //PC6_OUT=0;
     //PC5_OUT=0;
@@ -275,14 +275,14 @@ void bskill_run()
     GPIOC->ODR |= 0xe0; // PC6_OUT=1;  PC5_OUT=1;  PC7_OUT=1;
   }
 
-  if( Motordata.UI.BKcount<190 && Motordata.UI.BKcount>116)
+  if( Motordata.UI.bkcount<190 && Motordata.UI.bkcount>116)
   {
     GPIOC->ODR |= 0xe0; //  PC6_OUT=1; PC5_OUT=1; PC7_OUT=1;
   }
 
-  if( Motordata.UI.BKcount>=190)
+  if( Motordata.UI.bkcount>=190)
   {
-    Motordata.UI.BKcount=0;
+    Motordata.UI.bkcount=0;
   }
 #else
   PC6_OUT=0;

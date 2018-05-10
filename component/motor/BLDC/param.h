@@ -1,6 +1,6 @@
 /**********************************************************
-*name   : main.c
-*detail : ÂÖ•Âè£‰∏ªÂáΩÊï∞
+*name   : 
+*detail : 
 *version&time: v1.0 (2018-4-1)
 *author&team : wang yuan
 ***********************************************************/
@@ -9,35 +9,35 @@
 #define _PARAM_H_
 
 
-//#include"stm8s_type.h"
-//#include"public.h"
+/* Includes ------------------------------------------------------------------*/
 #include "platform.h"
 
-//ÊñπÊ°àÈÄâÊã©
+/*  defines&macro ------------------------------------------------------------*/
 //#define PROJ_SST16_194
 //#define PROJ_SST16_195
 //#define PROJ_SST17_DK
-//#define PROJ_SST17_1A1		//L
+//#define PROJ_SST17_1A1	//L
 #define PROJ_SST17_1A4		//W
 //#define PROJ_SST17_1B3
 
 //no option pwr on delay time
-#define	PWR_DELAY_TIME			80		//8S
+#define	PWR_DELAY_TIME	80	//8S
 
 //revs stop function
 #define	FUNC_REVS_STOP_EN
 //break function
 #define	FUNC_BREAK_EN
-
+// 
 //bat volt selection
 #define	VBAT_18V_EN
-//#define	VBAT_36V_EN
+//#define VBAT_36V_EN
+
 //BAT cap  VOLT
 #ifdef	VBAT_18V_EN
 ////2/17
-#define	BAT_VOLT1_ADC			380//308//370//380		////3.2V
-#define	BAT_VOLT2_ADC			425//420		////3.6V
-#define	BAT_VOLT3_ADC			450//462		////3.9V
+#define	BAT_VOLT1_ADC			380     //308//370//380	////3.2V
+#define	BAT_VOLT2_ADC			425     //420		////3.6V
+#define	BAT_VOLT3_ADC			450     //462		////3.9V
 #endif
 
 #ifdef	VBAT_36V_EN
@@ -71,347 +71,293 @@
 //LIMIT CURR
 #define	FUNC_LIMIT_CURR_EN
 //
-#define	LIMIT_CURR_VOLT_ADC	   400//330//400//450		//400--15A		//500-18A
+#define	LIMIT_CURR_VOLT_ADC	400//330//400//450		//400--15A		//500-18A
 #define	LIMIT_CURR1_VOLT_ADC	290//240//8A
 #define	LIMIT_CURR2_VOLT_ADC	330//290//14A
 #define	LIMIT_CURR3_VOLT_ADC	400//330	//15A//350	//17A	//340//16A
-
-
 
 //grade num pwm para set 
 
 #define	SPEED_GRADE_MIN		1
 
-#ifdef	PROJ_SST16_195
-#define	SPEED_GRADE_MAX		2
-//
-#define	GRADE1_PWM_MAX		1110
-#define	GRADE2_PWM_MAX		1280
-#define	GRADE3_PWM_MAX		700
-#define	GRADE4_PWM_MAX		850
-#define	GRADE5_PWM_MAX		1280
-#define	GRADE6_PWM_MAX		1000
-#define	GRADE7_PWM_MAX		1000
-#define	GRADE8_PWM_MAX		1000
+//#ifdef	PROJ_SST16_195
+//#define	SPEED_GRADE_MAX		2
+//#define	GRADE1_PWM_MAX		1110
+//#define	GRADE2_PWM_MAX		1280
+//#define	GRADE3_PWM_MAX		700
+//#define	GRADE4_PWM_MAX		850
+//#define	GRADE5_PWM_MAX		1280
+//#define	GRADE6_PWM_MAX		1000
+//#define	GRADE7_PWM_MAX		1000
+//#define	GRADE8_PWM_MAX		1000
+//#define	GRADE1_PWM_REVS_MAX		1130
+//#define	GRADE2_PWM_REVS_MAX		1280	//850
+//#define	GRADE3_PWM_REVS_MAX		1280
+//#define	GRADE4_PWM_REVS_MAX		1000
+//#define	GRADE5_PWM_REVS_MAX		1000
+//#define	GRADE6_PWM_REVS_MAX		1000
+//#define	GRADE7_PWM_REVS_MAX		1000
+//#define	GRADE8_PWM_REVS_MAX		1000
+//#endif
 
-#define	GRADE1_PWM_REVS_MAX		1130
-#define	GRADE2_PWM_REVS_MAX		1280	//850
-#define	GRADE3_PWM_REVS_MAX		1280
-#define	GRADE4_PWM_REVS_MAX		1000
-#define	GRADE5_PWM_REVS_MAX		1000
-#define	GRADE6_PWM_REVS_MAX		1000
-#define	GRADE7_PWM_REVS_MAX		1000
-#define	GRADE8_PWM_REVS_MAX		1000
-
-#endif
-
-#ifdef	PROJ_SST16_194
-#define	SPEED_GRADE_MAX		5
-//
-#define	GRADE1_PWM_MAX		400
-#define	GRADE2_PWM_MAX		600
-#define	GRADE3_PWM_MAX		700
-#define	GRADE4_PWM_MAX		850
-#define	GRADE5_PWM_MAX		1280
-#define	GRADE6_PWM_MAX		1000
-#define	GRADE7_PWM_MAX		1000
-#define	GRADE8_PWM_MAX		1000
-
-#define	GRADE1_PWM_REVS_MAX		1200
-#define	GRADE2_PWM_REVS_MAX		1200	//850
-#define	GRADE3_PWM_REVS_MAX		1280
-#define	GRADE4_PWM_REVS_MAX		1000
-#define	GRADE5_PWM_REVS_MAX		1000
-#define	GRADE6_PWM_REVS_MAX		1000
-#define	GRADE7_PWM_REVS_MAX		1000
-#define	GRADE8_PWM_REVS_MAX		1000
-
-#endif
+//#ifdef	PROJ_SST16_194
+//#define	SPEED_GRADE_MAX		5
+//#define	GRADE1_PWM_MAX		400
+//#define	GRADE2_PWM_MAX		600
+//#define	GRADE3_PWM_MAX		700
+//#define	GRADE4_PWM_MAX		850
+//#define	GRADE5_PWM_MAX		1280
+//#define	GRADE6_PWM_MAX		1000
+//#define	GRADE7_PWM_MAX		1000
+//#define	GRADE8_PWM_MAX		1000
+//#define	GRADE1_PWM_REVS_MAX		1200
+//#define	GRADE2_PWM_REVS_MAX		1200	//850
+//#define	GRADE3_PWM_REVS_MAX		1280
+//#define	GRADE4_PWM_REVS_MAX		1000
+//#define	GRADE5_PWM_REVS_MAX		1000
+//#define	GRADE6_PWM_REVS_MAX		1000
+//#define	GRADE7_PWM_REVS_MAX		1000
+//#define	GRADE8_PWM_REVS_MAX		1000
+//#endif
 
 //L
-#ifdef	PROJ_SST17_1A1
-#define	SPEED_GRADE_MAX		2
-//
-#define	GRADE1_PWM_MAX		700
-#define	GRADE2_PWM_MAX		1280	//850
-#define	GRADE3_PWM_MAX		1250
-#define	GRADE4_PWM_MAX		1000
-#define	GRADE5_PWM_MAX		1000
-#define	GRADE6_PWM_MAX		1000
-#define	GRADE7_PWM_MAX		1000
-#define	GRADE8_PWM_MAX		1000
-
-#define	GRADE1_PWM_REVS_MAX		1250
-#define	GRADE2_PWM_REVS_MAX		1280	//850
-#define	GRADE3_PWM_REVS_MAX		1250
-#define	GRADE4_PWM_REVS_MAX		1000
-#define	GRADE5_PWM_REVS_MAX		1000
-#define	GRADE6_PWM_REVS_MAX		1000
-#define	GRADE7_PWM_REVS_MAX		1000
-#define	GRADE8_PWM_REVS_MAX		1000
-
-#endif
+//#ifdef	PROJ_SST17_1A1
+//#define	SPEED_GRADE_MAX		2
+//#define	GRADE1_PWM_MAX		700
+//#define	GRADE2_PWM_MAX		1280	//850
+//#define	GRADE3_PWM_MAX		1250
+//#define	GRADE4_PWM_MAX		1000
+//#define	GRADE5_PWM_MAX		1000
+//#define	GRADE6_PWM_MAX		1000
+//#define	GRADE7_PWM_MAX		1000
+//#define	GRADE8_PWM_MAX		1000
+//#define	GRADE1_PWM_REVS_MAX		1250
+//#define	GRADE2_PWM_REVS_MAX		1280	//850
+//#define	GRADE3_PWM_REVS_MAX		1250
+//#define	GRADE4_PWM_REVS_MAX		1000
+//#define	GRADE5_PWM_REVS_MAX		1000
+//#define	GRADE6_PWM_REVS_MAX		1000
+//#define	GRADE7_PWM_REVS_MAX		1000
+//#define	GRADE8_PWM_REVS_MAX		1000
+//#endif
 
 //W
-#ifdef	PROJ_SST17_DK
-#define	SPEED_GRADE_MAX		2
-//
-#define	GRADE1_PWM_MAX		700
-#define	GRADE2_PWM_MAX		1280	//850
-#define	GRADE3_PWM_MAX		1270
-#define	GRADE4_PWM_MAX		1000
-#define	GRADE5_PWM_MAX		1000
-#define	GRADE6_PWM_MAX		1000
-#define	GRADE7_PWM_MAX		1000
-#define	GRADE8_PWM_MAX		1000
-
-#define	GRADE1_PWM_REVS_MAX		1280
-#define	GRADE2_PWM_REVS_MAX		1280	//850
-#define	GRADE3_PWM_REVS_MAX		1280
-#define	GRADE4_PWM_REVS_MAX		1000
-#define	GRADE5_PWM_REVS_MAX		1000
-#define	GRADE6_PWM_REVS_MAX		1000
-#define	GRADE7_PWM_REVS_MAX		1000
-#define	GRADE8_PWM_REVS_MAX		1000
-
-#endif
+//#ifdef	PROJ_SST17_DK
+//#define	SPEED_GRADE_MAX		2
+//#define	GRADE1_PWM_MAX		700
+//#define	GRADE2_PWM_MAX		1280	//850
+//#define	GRADE3_PWM_MAX		1270
+//#define	GRADE4_PWM_MAX		1000
+//#define	GRADE5_PWM_MAX		1000
+//#define	GRADE6_PWM_MAX		1000
+//#define	GRADE7_PWM_MAX		1000
+//#define	GRADE8_PWM_MAX		1000
+//#define	GRADE1_PWM_REVS_MAX		1280
+//#define	GRADE2_PWM_REVS_MAX		1280	//850
+//#define	GRADE3_PWM_REVS_MAX		1280
+//#define	GRADE4_PWM_REVS_MAX		1000
+//#define	GRADE5_PWM_REVS_MAX		1000
+//#define	GRADE6_PWM_REVS_MAX		1000
+//#define	GRADE7_PWM_REVS_MAX		1000
+//#define	GRADE8_PWM_REVS_MAX		1000
+//#endif
 
 //W
 #ifdef	PROJ_SST17_1A4
 #define	SPEED_GRADE_MAX		3
-//
-#define	GRADE1_PWM_MAX		900//915		//920
-#define	GRADE2_PWM_MAX		1050//1000	//850
-#define	GRADE3_PWM_MAX		1250//1150//1200//1280
+#define	GRADE1_PWM_MAX		900     //915		//920
+#define	GRADE2_PWM_MAX		1050    //1000	//850
+#define	GRADE3_PWM_MAX		1250    //1150//1200//1280
 #define	GRADE4_PWM_MAX		1000
 #define	GRADE5_PWM_MAX		1000
 #define	GRADE6_PWM_MAX		1000
 #define	GRADE7_PWM_MAX		1000
 #define	GRADE8_PWM_MAX		1000
-
-#define	GRADE1_PWM_REVS_MAX		1280//1200//1280
-#define	GRADE2_PWM_REVS_MAX		1280//1200//1280	//850
-#define	GRADE3_PWM_REVS_MAX		1280//1200//1280
-#define	GRADE4_PWM_REVS_MAX		1000
-#define	GRADE5_PWM_REVS_MAX		1000
-#define	GRADE6_PWM_REVS_MAX		1000
-#define	GRADE7_PWM_REVS_MAX		1000
-#define	GRADE8_PWM_REVS_MAX		1000
-
+#define	GRADE1_PWM_REVS_MAX     1280    //1200//1280
+#define	GRADE2_PWM_REVS_MAX	1280    //1200//1280	//850
+#define	GRADE3_PWM_REVS_MAX	1280    //1200//1280
+#define	GRADE4_PWM_REVS_MAX	1000
+#define	GRADE5_PWM_REVS_MAX	1000
+#define	GRADE6_PWM_REVS_MAX	1000
+#define	GRADE7_PWM_REVS_MAX	1000
+#define	GRADE8_PWM_REVS_MAX	1000
 #endif
 
-#ifdef	PROJ_SST17_1B3
-#define	SPEED_GRADE_MAX		2
-//
-#define	GRADE1_PWM_MAX		600
-#define	GRADE2_PWM_MAX		1280	//850
-#define	GRADE3_PWM_MAX		1280
-#define	GRADE4_PWM_MAX		1000
-#define	GRADE5_PWM_MAX		1000
-#define	GRADE6_PWM_MAX		1000
-#define	GRADE7_PWM_MAX		1000
-#define	GRADE8_PWM_MAX		1000
-
-#define	GRADE1_PWM_REVS_MAX		1280
-#define	GRADE2_PWM_REVS_MAX		1280	//850
-#define	GRADE3_PWM_REVS_MAX		1280
-#define	GRADE4_PWM_REVS_MAX		1000
-#define	GRADE5_PWM_REVS_MAX		1000
-#define	GRADE6_PWM_REVS_MAX		1000
-#define	GRADE7_PWM_REVS_MAX		1000
-#define	GRADE8_PWM_REVS_MAX		1000
-
-#endif
+//#ifdef	PROJ_SST17_1B3
+//#define	SPEED_GRADE_MAX		2
+//#define	GRADE1_PWM_MAX		600
+//#define	GRADE2_PWM_MAX		1280	//850
+//#define	GRADE3_PWM_MAX		1280
+//#define	GRADE4_PWM_MAX		1000
+//#define	GRADE5_PWM_MAX		1000
+//#define	GRADE6_PWM_MAX		1000
+//#define	GRADE7_PWM_MAX		1000
+//#define	GRADE8_PWM_MAX		1000
+//#define	GRADE1_PWM_REVS_MAX		1280
+//#define	GRADE2_PWM_REVS_MAX		1280	//850
+//#define	GRADE3_PWM_REVS_MAX		1280
+//#define	GRADE4_PWM_REVS_MAX		1000
+//#define	GRADE5_PWM_REVS_MAX		1000
+//#define	GRADE6_PWM_REVS_MAX		1000
+//#define	GRADE7_PWM_REVS_MAX		1000
+//#define	GRADE8_PWM_REVS_MAX		1000
+//#endif
 
 
-
-/******************************************************
-*------------- data typedef----------------------------
-*******************************************************/
-//Áä∂ÊÄÅÊú∫ÁöÑÁä∂ÊÄÅÂÄºÂÆö‰πâÔºåÊûö‰∏æ========================
+/*  typedef ------------------------------------------------------------------*/
+// µÁª˙◊¥Ã¨ª˙
 typedef  enum mstate
 {
-  Checkme=1,
-  Ready=2,
-  Startup=3,
-  StartRun=4,
-  NorRun=5,
-  Fause=6,
-  Brake=7,
-  Stop=8
-} mstate;
+  Checkme       = 1,
+  Ready         = 2,
+  Startup       = 3,
+  StartRun      = 4,
+  NorRun        = 5,
+  Fause         = 6,
+  Brake         = 7,
+  Stop          = 8,
+} state_t;
 
-/**********************************************************/
-//ÂÆö‰πâ‰∏Ä‰∏™ÁªìÊûÑ‰ΩìÊï∞ÊçÆÁ±ªÂûãÔºå‰∏ªË¶ÅÁî®‰∫éÂ≠òÂÇ®adcÁõ∏ÂÖ≥Êï∞ÊçÆ==========
-
-//----------------------------------------------------------
-//ÂÆö‰πâ‰∏Ä‰∏™ÁªìÊûÑ‰ΩìÊï∞ÊçÆÁ±ªÂûãÔºåÁî®‰∫éÁ≥ªÁªüËøêË°åÁöÑ‰∏ªË¶ÅÂèÇÊï∞Â≠òÂÇ®========
+// ADCœ‡πÿ ˝æ›
 typedef  struct collect
 {
-  //-----------------------
-  u16 ADC_inj_o;
-  u16 ADC_inj_l;
-  s16 ADC_inj_n;
-  s16 ADC_inj_ne;
-  //-----------------------
-  u8  incount; 
-  u16 chsptime;
-  u8 smcount;
-} collect;			
+  uint16_t ADC_inj_o;
+  uint16_t ADC_inj_l;
+  int16_t ADC_inj_n;
+  int16_t ADC_inj_ne;
+  uint16_t chsptime;
+  uint8_t incount; 
+  uint8_t smcount;
+} collect_t;			
 
-
-
-//============================================================
-//************************************************************
+// ªÙ∂˚–≈œ¢
 typedef  struct hall
-{	  
-//==================
-	u8  Hallnow;    
-	u8  Hallold;
-	u8  hallnext;
-	u8  halllp;
-	u8  halllf;
-                          
-}hall;
+{
+  uint8_t  Hallnow;
+  uint8_t  Hallold;
+  uint8_t  hallnext;
+  uint8_t  halllp;
+  uint8_t  halllf;
+  uint8_t fill1;
+  uint8_t fill2;
+  uint8_t fill3;
+} hall_t;
 
-
-//************************************************************
+// 
 typedef  struct Rstep
-{ 
-	u8 	nwstep;
-	u8 	nestep;
-	u8 	odstep;
+{
+  uint8_t nwstep;
+  uint8_t nestep;
+  uint8_t odstep;
+  uint8_t fill;
+} rstep_t;
 
-}Rstep;
-//============================================================
-
-										
-/***********************************************************/
+// 
 typedef  struct Mprc
-{	
-	u8   clcount;	
-	u16  Volt;
-	u16  Anp;
-	u16  Tempr;
-//	
-	u16  MosTemp;
-	u16  MosAddBatTemp;
-	u16  BatTemp;	
-//==‰∫åÈò∂Êª§Ê≥¢=======
-	u16  DISv;
-	u16  DIStp;//Ê∏©Â∫¶
-	
-	u16  DISvsm;//ËøáÂéã
-	u16  DISism;//ËøáÊµÅ
-	u16  DISois;//
-											
-//======================
-	u16  bufovp;//Ê¨†Âéã‰øùÊä§
-	u16  bufsep;//ËøáÂéã‰øùÊä§
-	u16  bufocp;//ËøáÊµÅ‰øùÊä§
-	u16  bufoct;//ËøáÊ∏©‰øùÊä§
-}Mprc;
-/********************************************/				 
-										 
+{
+  uint8_t fill;
+  uint8_t clcount;
+  uint16_t  Volt;
+  uint16_t  Anp;
+  uint16_t  Tempr;
+  uint16_t  MosTemp;
+  uint16_t  MosAddBatTemp;
+  uint16_t  BatTemp;	
+  uint16_t  DISv;       // ∂˛Ω◊¬À≤®
+  uint16_t  DIStp;      // Œ¬∂»
+  uint16_t  DISvsm;     // π˝—π
+  uint16_t  DISism;     // π˝¡˜
+  uint16_t  DISois;
+  uint16_t  bufovp;     // «∑—π±£ª§
+  uint16_t  bufsep;     // π˝—π±£ª§
+  uint16_t  bufocp;     // π˝¡˜±£ª§
+  uint16_t  bufoct;     // π˝Œ¬±£ª§
+} mprc_t;
+
+// 
 typedef  enum   Mert
-{  
-	eNO=0,
-	//  eHall=6,  //ÈúçÂ∞îÈîôËØØ
-	eOvp=3,   //ËøáÂéã
-	eOcp=1,   // ËøáÊµÅ
-	eOct=5,   //ËøáÊ∏©
-	eBkr=4,   // Â†µËΩ¨
-	elvp=2    //Ê¨†Âéã
-}Mert;	
-										 
-										 
-/****************************************************/	 
-
-typedef   struct  swh
 {
-	u8   Mgear;//==Ê°£‰Ωç===
-	u8   SWkey;//
-	u8   SSkey;
-	u16  TRdelay;
-	u16  TRdelay1;	
-	u8   sakeyflg;
-	u8   sbkeyflg;
-	u8   FRstop;
-	u8   TIWNO;
-	u8   TIWOFF;
-	u16  ONbuf;
-	u16  OFbuf;
-	u16  KILLrun;
-	u8  readkey;
-	u8 	spkey;
-												
-}swh;
-										 
-/***************************************************/			 
-typedef    struct Mui
+  eNO   = 0,    // 
+  eOcp  = 1,    // π˝¡˜
+  elvp  = 2,    // «∑—π
+  eOvp  = 3,    // π˝—π
+  eBkr  = 4,    // ∂¬◊™
+  eOct  = 5,    // π˝Œ¬
+  ehall = 6,    // ªÙ∂˚¥ÌŒÛ
+} ert_t;	
+
+// 
+typedef struct swh
 {
-
-	u16    Gduty;
-	u16    Mroller;
-	u16    Mledcount;
-	u16    showstep;
-	u16    showbuf;
-	u16    BKcount;
-	u8     adspeedt;
-	u16    showcount;
-	u16    showtime;
-//====================
-	u8     Blink;
-	u8     MFRch;
-}Mui;										 
-											
-/**********************************************************/
-//ÂÆö‰πâ‰∏Ä‰∏™ÁªìÊûÑ‰ΩìÊï∞ÊçÆÁ±ªÂûãÔºåÁî®‰∫éÁ≥ªÁªüËøêË°åÁöÑ‰∏ªË¶ÅÂèÇÊï∞Â≠òÂÇ®=======	
-typedef  struct  prarm
+  uint8_t gear;        // µµŒª≥›¬÷
+  uint8_t swkey;
+  uint8_t sskey;
+  uint8_t sakeyflg;
+  uint8_t sbkeyflg;
+  uint8_t FRstop;
+  uint8_t TIWNO;
+  uint8_t TIWOFF;
+  uint8_t readkey;
+  uint8_t spkey;
+  uint16_t  TRdelay;
+  uint16_t  TRdelay1;
+  uint16_t  ONbuf;
+  uint16_t  OFbuf;
+  uint16_t  KILLrun;
+} swh_t;
+							
+// LEDœ‘ æ”√
+typedef struct Mui
 {
-//Áä∂ÊÄÅÊú∫=============
-	mstate station;
-	hall   bHall; 
-	Rstep  bstep;
-	Mui     UI;	
-	Mert   fault;
-	swh    SWhkey;
-	Mprc   prct   ;
-	u8     BatPower;
-	s16    outduty;
-	u16    hopeduty;
-	u8     Dswitch;
-	u8     INJGPH;
-	u8     MFR;
-	u8     Flgsw;
-	u8     Disstatus;
-	u8   	mstep;
-	u8    test;						 
-	u16    TRcount;
-	u16    TQcount;
-	u16    TVcount;
-											 
-}param;	
+  uint16_t duty;
+  uint16_t roller;
+  uint16_t ledcount;
+  uint16_t showstep;
+  uint16_t showbuf;
+  uint16_t bkcount;
+  uint16_t showcount;
+  uint16_t showtime;
+  uint8_t adspeedt;
+  uint8_t blink;
+  uint8_t MFRch;
+  uint8_t fill;
+} ui_t;						 
 
-/***********************************************************/
-/*de  extern  param
-************************************************************/
-//ÂÖ®Â±ÄÂèòÈáèÂ£∞Êòé==============================================
-extern    param  Motordata;
-extern    collect Injection;
-/***************************/
+// œµÕ≥‘À––µƒ÷˜“™≤Œ ˝ºØ∫œ
+typedef struct prarm
+{
+  state_t station;
+  rstep_t bstep;
+  mprc_t  prct; // “™¥Ê¥¢£ø
+  hall_t  bHall; 
+  swh_t   SWhkey;  
+  ert_t   fault;
+  ui_t    UI;	 
+  uint16_t hopeduty;
+  uint16_t TRcount;
+  uint16_t TQcount;
+  uint16_t TVcount;
+  int16_t  outduty;  
+  uint8_t  BatPower;
+  uint8_t  Dswitch;
+  uint8_t  INJGPH;
+  uint8_t  MFR;
+  uint8_t  Flgsw;
+  uint8_t  Disstatus;
+  uint8_t  mstep;
+  uint8_t  test;						 							 
+} param_t;
 
-
-
-extern         u8 pz_buf;
-
+/*  variables&constants  -----------------------------------------------------*/
+extern param_t  Motordata;
+extern collect_t Injection;
+extern uint8_t pz_buf;
+extern uint8_t  bemfchtable[];
+extern uint8_t  Tphtable[];
 extern const uint8_t  halltable[];
 extern const uint8_t  phtable[];
-extern       uint8_t  bemfchtable[];
-extern       uint8_t  Tphtable[];
 extern const uint8_t  LPT[];
-/***********************************************************/
-/***********************************************************/
-//ÂáΩÊï∞Â£∞Êòé===================================================
 
 #endif
+
+/************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
