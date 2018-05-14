@@ -46,7 +46,7 @@ void ChangeDuty(u16 pwm_value);
 void ReadHallGetStep(void);
 void NorChangePhase(void);
 void TIM5_Star(void);
-void TIM5_Start(void);
+void TIM5_Start(uint16_t arr);
 void pwm_reset(void);     
 /*===================================================================================================*/
 

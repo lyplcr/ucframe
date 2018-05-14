@@ -7,8 +7,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "motor.h"
-//#include "gpio.h"
-//#include "adc.h"
 #include "mswitch.h"
 #include "mc_control.h"
 #include "param.h"
@@ -60,7 +58,7 @@ const unsigned short EVERY_GRADE_LIMIT_CURR_TAB[] =
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
 
-
+// 
 void MC_Swbut_Check(void)
 {
   uint8_t *padr_rrstop;	
@@ -74,7 +72,7 @@ void MC_Swbut_Check(void)
 #ifdef	PROJ_SST16_195
     Motordata.SWhkey.FRstop = 0xaa;
 #else
-    if(Motordata.SWhkey.readkey == 2)//    if(Motordata.SWhkey.readkey==1)	
+    if(Motordata.SWhkey.readkey == 2)   //    if(Motordata.SWhkey.readkey==1)	
     {
       if(Motordata.SWhkey.swkey < 20)
       {
@@ -101,7 +99,7 @@ void MC_Swbut_Check(void)
     }
 #endif				 
 //SPEED KEY PRESS	
-    if(Motordata.SWhkey.spkey == 1)//if(Motordata.SWhkey.spkey==2)	
+    if(Motordata.SWhkey.spkey == 1)     //if(Motordata.SWhkey.spkey==2)	
     {
       if(Motordata.SWhkey.sskey < 20)
       {
@@ -117,22 +115,13 @@ void MC_Swbut_Check(void)
 #endif				
         {
 //          Motordata.SWhkey.Mgear=~Motordata.SWhkey.Mgear;	
-// modify by goldjun
+//          modify by goldjun
           Motordata.SWhkey.gear++;
           if(Motordata.SWhkey.gear > SPEED_GRADE_MAX)
           {
             Motordata.SWhkey.gear = SPEED_GRADE_MIN;
           }
           Motordata.UI.duty = EVERY_GRADE_PWM_MAX_TAB[Motordata.SWhkey.gear];
-// modify by goldjun
-//          if( Motordata.SWhkey.Mgear==0xdd)
-//          {
-//            Motordata.UI.Gduty=1270;
-//          }
-//          if( Motordata.SWhkey.Mgear==0x22)
-//          { 
-//            Motordata.UI.Gduty=700;
-//          }
           eeprom_openlock();
           padr_rrstop=(uint8_t *)0x4028;
           *padr_rrstop=Motordata.SWhkey.gear;
@@ -166,29 +155,30 @@ uint8_t Get_sw_fr(void)
   return (GPIOD->IDR & 0x80)==0 ? 0 :1;	
 }
 
-
-//=============================================
+// 
 void Get_adc_sw(void)
 {
 
 }
 
+// 
 void Get_adc_vl(void)
 {
-  Motordata.hopeduty = (ADC1->DRH<<8)+ADC1->DRL;        // Motordata.hopeduty=ADC_DR;
+  Motordata.hopeduty = ADC1->DRL;        // Motordata.hopeduty=ADC_DR;
+  Motordata.hopeduty += (ADC1->DRH<<8);
 }
 
-/************************************************/
+// 开关状态读取
 void Check_switch_onff()
 {
   if(Motordata.hopeduty > SDSWITCH_MIN_ON)
   {
     Motordata.SWhkey.OFbuf = 0;
     Motordata.SWhkey.ONbuf += 1;
-    if( Motordata.SWhkey.ONbuf > 1000)	//10	
-    {	
+    if( Motordata.SWhkey.ONbuf > 100)
+    {
       Motordata.Dswitch = MOTOR_ON;
-      Motordata.SWhkey.ONbuf = 0;		
+      Motordata.SWhkey.ONbuf = 0;
     }
   }
   
@@ -196,16 +186,13 @@ void Check_switch_onff()
   {
     Motordata.SWhkey.ONbuf = 0;
     Motordata.SWhkey.OFbuf += 1;
-    if( Motordata.SWhkey.OFbuf > 1000)	//10
+    if( Motordata.SWhkey.OFbuf > 100)
     {
       Motordata.Dswitch = MOTOR_OFF;
       Motordata.SWhkey.OFbuf = 0;
     }
   }
-
 }
-
-/*******************************************************/
 
 ///////////////////////modify by goldjun//////////////////////////
 //#define	FUNC_TEMP_DETECT_MODE_EN
@@ -508,38 +495,33 @@ void check_erorr()
 
 #ifdef	FUNC_TEMP_DETECT_MODE_EN
 
-//===============================
 //detect mos temp protect dot advalue
 //85
-	if(Motordata.prct.MosTemp < MOS_TEMP_85_PROTECT)
-	{
-		Motordata.fault=eOct;
-		Motordata.station=Stop;
-		Motordata.UI.Blink=4;
-	}
-//===============================	
+  if(Motordata.prct.MosTemp < MOS_TEMP_85_PROTECT)
+  {
+    Motordata.fault=eOct;
+    Motordata.station=Stop;
+    Motordata.UI.Blink=4;
+  }	
 //crc mos real temp
-	for(MosRealTemp = 0;MosRealTemp < 115;MosRealTemp ++)
-	{
-		if(Motordata.prct.MosTemp > MOS_TEMP_TAB[MosRealTemp])
-		{
-			break;
-		}
-	}
-//===============================	
+  for(MosRealTemp = 0;MosRealTemp < 115;MosRealTemp ++)
+  {
+    if(Motordata.prct.MosTemp > MOS_TEMP_TAB[MosRealTemp])
+    {
+      break;
+    }
+  }
 //crc mos add bat protect dot advalue	
-	MosAddBatTempVal = MOSADDBAT_TEMP_TAB[MosRealTemp];
+  MosAddBatTempVal = MOSADDBAT_TEMP_TAB[MosRealTemp];
 
-
-//===============================
 //70	
 //detect mos add bat temp protect dot advalue
-	if( Motordata.prct.MosAddBatTemp < MosAddBatTempVal)
-	{
-		Motordata.fault=eOct;
-		Motordata.station=Stop;
-		Motordata.UI.Blink=2;
-	}
+  if( Motordata.prct.MosAddBatTemp < MosAddBatTempVal)
+  {
+    Motordata.fault=eOct;
+    Motordata.station=Stop;
+    Motordata.UI.Blink=2;
+  }
 #endif	
 ///////////////////////modify by goldjun//////////////////////////
 }
@@ -562,15 +544,6 @@ void read_eeprom_vla(void)
   padr_sstp = (uint8_t *)0x4028;
   Motordata.SWhkey.gear = *padr_sstp;
 
-//  if( Motordata.SWhkey.Mgear==0xdd)
-//  { 
-//    Motordata.UI.Gduty=1270;
-//  }
-//  if( Motordata.SWhkey.Mgear==0x22)
-//  { 
-//    Motordata.UI.Gduty=700;
-//  }
-
 // modify by goldjun
   if((Motordata.SWhkey.gear < SPEED_GRADE_MIN)||(Motordata.SWhkey.gear > SPEED_GRADE_MAX))
   {
@@ -581,7 +554,7 @@ void read_eeprom_vla(void)
   FLASH->IAPSR &= (uint8_t)0xf7;
 }
 
-// 
+// 过流保护监测
 void Motor_ip(void)
 {
 #ifdef	FUNC_SOC_PROTEC_EN
@@ -596,14 +569,13 @@ void Motor_ip(void)
   /****************************************
   *500-2.5v=10a
   *550-2.75=12
-  *
   **************************************/
-  if(Motordata.prct.DISism>200)
+  if(Motordata.prct.DISism > 200)
   {
-    Motordata.fault=eOcp;
-    Motordata.prct.DISism=0;
-    Motordata.station=Stop;
-    Motordata.UI.Blink=9;
+    Motordata.fault = eOcp;     // 过流
+    Motordata.prct.DISism = 0;
+    Motordata.station = Stop;
+    Motordata.UI.Blink = 9;
   }
 #endif
 }

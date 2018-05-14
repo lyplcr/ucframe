@@ -25,21 +25,14 @@ uint8_t check_table[]={0,0,0};
 
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
 
-/************************************************
-* 函数名称: 
-* 版本号:   v1.0
-* 参数描述: 无
-* 返回值:   无
-* 描述:     
-**************************************************/
-
+// 
 void ChangeDuty(uint16_t pwm_value)
 {
-  uint8_t CCRH,CCRL;
+  uint8_t CCRH, CCRL;
   
-  if(pwm_value>PWM_PERIOD) 
+  if(pwm_value > PWM_PERIOD) 
   {
-    pwm_value=PWM_PERIOD;
+    pwm_value = PWM_PERIOD;
   }
   CCRH=(uint8_t)(pwm_value >> 8);
   CCRL=(uint8_t)(pwm_value);
@@ -51,10 +44,9 @@ void ChangeDuty(uint16_t pwm_value)
   TIM1->CCR3H = CCRH;
   TIM1->CCR3L = CCRL;
 
-  pwm_value+=100;
-  pwm_value=pwm_value>>1;
-  CCRH=(uint8_t)(pwm_value >> 8);
-  CCRL=(uint8_t)(pwm_value);
+  pwm_value = (pwm_value+100)>>1;
+  CCRH = (uint8_t)(pwm_value >> 8);
+  CCRL = (uint8_t)(pwm_value);
   TIM1->CCR4H = CCRH;
   TIM1->CCR4L = CCRL;
 }
@@ -247,7 +239,7 @@ uint8_t GetHall()
 
 /***********************************************************/
 
-//============================================================
+// 
 uint8_t Get_pa_vhl(void)
 {
   uint8_t bufx;
@@ -256,10 +248,8 @@ uint8_t Get_pa_vhl(void)
   return(bufx);
 }
 
-//============================================================
-
-
-void bskill_run()
+// 
+void bskill_run(void)
 {
   static unsigned short	BreakCnt = 0;
   
@@ -269,9 +259,6 @@ void bskill_run()
 #ifdef	FUNC_BREAK_EN
   if( Motordata.UI.bkcount < 116)
   {
-    //PC6_OUT=0;
-    //PC5_OUT=0;
-    //PC7_OUT=0;
     GPIOC->ODR |= 0xe0; // PC6_OUT=1;  PC5_OUT=1;  PC7_OUT=1;
   }
 
@@ -285,8 +272,6 @@ void bskill_run()
     Motordata.UI.bkcount=0;
   }
 #else
-  PC6_OUT=0;
-  PC5_OUT=0;
-  PC7_OUT=0;
+  GPIOC->ODR &= 0x1f;
 #endif
 }

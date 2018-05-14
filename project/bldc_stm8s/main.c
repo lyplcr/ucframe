@@ -18,19 +18,18 @@
 
 /*  functions ----------------------------------------------------------------*/
 
-
 // 
 int main( void )
 {
   PlatfrmInit();
-  BoardInit();
+  BoardInit();  
   MotorInit();
   dlay(50000);
   
   while (1)
   {
-    Motor_ip();
-    Check_switch_onff();
+    Motor_ip();                 // 过流保护监测
+    Check_switch_onff();        // 开关状态读取
 
     if( (Motordata.station==Stop) && (Motordata.UI.blink>0) )   
     {

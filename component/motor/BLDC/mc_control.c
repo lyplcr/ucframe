@@ -52,30 +52,28 @@ const uint8_t prztable[]={0,6,3,5,5,6,3,0};//反加速
 
 const unsigned short EVERY_GRADE_PWM_MAX_TAB1[] =
 {
-	0,
-	GRADE1_PWM_MAX,
-	GRADE2_PWM_MAX,
-	GRADE3_PWM_MAX,
-	GRADE4_PWM_MAX,
-	GRADE5_PWM_MAX,
-	GRADE6_PWM_MAX,
-	GRADE7_PWM_MAX,
-	GRADE8_PWM_MAX
-
+  0,
+  GRADE1_PWM_MAX,
+  GRADE2_PWM_MAX,
+  GRADE3_PWM_MAX,
+  GRADE4_PWM_MAX,
+  GRADE5_PWM_MAX,
+  GRADE6_PWM_MAX,
+  GRADE7_PWM_MAX,
+  GRADE8_PWM_MAX
 };
 
 const unsigned short EVERY_GRADE_PWM_REVS_MAX_TAB1[] =
 {
-	0,
-	GRADE1_PWM_REVS_MAX,
-	GRADE2_PWM_REVS_MAX,
-	GRADE3_PWM_REVS_MAX,
-	GRADE4_PWM_REVS_MAX,
-	GRADE5_PWM_REVS_MAX,
-	GRADE6_PWM_REVS_MAX,
-	GRADE7_PWM_REVS_MAX,
-	GRADE8_PWM_REVS_MAX
-
+  0,
+  GRADE1_PWM_REVS_MAX,
+  GRADE2_PWM_REVS_MAX,
+  GRADE3_PWM_REVS_MAX,
+  GRADE4_PWM_REVS_MAX,
+  GRADE5_PWM_REVS_MAX,
+  GRADE6_PWM_REVS_MAX,
+  GRADE7_PWM_REVS_MAX,
+  GRADE8_PWM_REVS_MAX
 };
 
 /*  functions ----------------------------------------------------------------*/
@@ -252,16 +250,16 @@ void dlay (u16 d)
 // 
 void MCTask_Ready()
 {   
-  if( Motordata.Dswitch==MOTOR_ON)
+  if( Motordata.Dswitch == MOTOR_ON)
   {
-    Motordata.UI.roller=700;
+    Motordata.UI.roller = 700;
     GPIOD->ODR |= 0x04;     // PD2_OUT=1;
-    Motordata.SWhkey.TRdelay=PWR_DELAY_TIME;
-    Motordata.station=Startup;
+    Motordata.SWhkey.TRdelay = PWR_DELAY_TIME;
+    Motordata.station = Startup;
     dlay(30);
 		
-    Motordata.prct.DISv= Motordata.prct.Volt;
-    Motordata.prct. DIStp=Motordata.prct.Tempr;//温度
+    Motordata.prct.DISv = Motordata.prct.Volt;
+    Motordata.prct.DIStp = Motordata.prct.Tempr;//温度
     //Motordata.prct. DIStp = Motordata.prct.MosTemp;
     //Motordata.prct. DIStp = Motordata.prct.MosAddBatTemp;
 //   Motordata.prct.DISvsm;//过压
@@ -271,31 +269,26 @@ void MCTask_Ready()
   }
   DisAllPwmOut();
 }
-//========================================================
 
+// 
 void MCTask_Start()
 {
   //==脉枕注入============
   if(Motordata.Flgsw==1)
   {
-    //=======================
-    ///*
     dlay (3000);
     InJect_AB_Task();
     InJect_AC_Task();
     InJect_BC_Task();
-    //========================
     InJect_ST_Prc();
     Motordata.mstep=Motordata.INJGPH;
     dlay (3000);
     InJect_AB_Task();
     InJect_AC_Task();
     InJect_BC_Task();
-    //===================
     //==解析=============
     InJect_ST_Prc();
-    //---------------------
-    //*/
+    
     /*
     //dlay (3000);
     dlay (1000);
@@ -305,15 +298,15 @@ void MCTask_Start()
     Motordata.mstep=Motordata.INJGPH;
     Motordata.INJGPH = Get_Step_ForInsertPulse();
     */
-    Motordata.Flgsw=0;
+    Motordata.Flgsw = 0;
     GPIOC->ODR |= 0xf0;     //PC_ODR=0xf0;
 
     dlay(100);
   }
   //-----------------------------
 }
-//======================================================
 
+// 
 #if 0
 void MCTask_NorRun(void)
 {
@@ -656,177 +649,165 @@ void MCTask_Stop()
 {
   DisAllPwmOut();
   // switch()
-  if( Motordata.Dswitch==MOTOR_ON)
+  if( Motordata.Dswitch == MOTOR_ON)
   {
+    
   }
 }
 
 // 状态机部分的运行程序，与公用程序部分并行
 void Motor_Run(void)
-{ 
+{
   switch(Motordata.station)
   {
-    case Ready:         // 等待状态
-      {  //==检测是否运行======= 
-        if(Get_sw_fr()==0)      // 判断正反转
+    case Ready:                 // 等待状态
+      if(Get_sw_fr()==0)        // 判断正反转
+      {
+        Motordata.MFR = SW_POS;	        //CW	
+      }
+      if(Get_sw_fr()==1)
+      { 
+        Motordata.MFR = SW_REVS;        //CCW
+      }
+      
+      if(Motordata.UI.MFRch != Motordata.MFR)
+      {
+        Motordata.UI.MFRch = Motordata.MFR;
+        Motordata.UI.duty = EVERY_GRADE_PWM_MAX_TAB1[Motordata.SWhkey.gear];
+        if(Motordata.MFR == DIR_REVS) 
         {
-          Motordata.MFR = SW_POS;			//CW	
+          Motordata.UI.duty = EVERY_GRADE_PWM_REVS_MAX_TAB1[Motordata.SWhkey.gear];
         }
-        if(Get_sw_fr()==1)
-        { 
-          Motordata.MFR = SW_REVS;			//CCW
-        }
-        
-        if(Motordata.UI.MFRch != Motordata.MFR)
-        {
-          Motordata.UI.MFRch = Motordata.MFR;
-          Motordata.UI.duty = EVERY_GRADE_PWM_MAX_TAB1[Motordata.SWhkey.gear];
-          if(Motordata.MFR == DIR_REVS) 
-          {
-            Motordata.UI.duty = EVERY_GRADE_PWM_REVS_MAX_TAB1[Motordata.SWhkey.gear];
-          }
-          Motordata.SWhkey.TRdelay = PWR_DELAY_TIME;
-        }
-        if( Motordata.Dswitch == MOTOR_OFF)
-        {	 
-          Motordata.Flgsw=1;
-        }			
-        MC_Swbut_Check();       // 按键开关
-        bskill_run();		
-        MCTask_Ready();
-        DisAllPwmOut();	
-      } break;
+        Motordata.SWhkey.TRdelay = PWR_DELAY_TIME;
+      }
+      if( Motordata.Dswitch == MOTOR_OFF)
+      {
+        Motordata.Flgsw = 1;
+      }			
+      MC_Swbut_Check();       // 按键开关
+      bskill_run();		
+      MCTask_Ready();
+      DisAllPwmOut();	
+      break;
   case  Startup:        //获得第一步的位置识别
+    GPIOC->ODR &= 0x1f;   // PC6_OUT=0;PC5_OUT=0;PC7_OUT=0;
+    pwm_reset();
+    MCTask_Start();
+    if( Motordata.mstep == Motordata.INJGPH)
     {
-      GPIOC->ODR &= 0x1f;   // PC6_OUT=0;PC5_OUT=0;PC7_OUT=0;
-      pwm_reset();
-      MCTask_Start();	
-      if( Motordata.mstep == Motordata.INJGPH)
-      {
-        Motordata.station = StartRun;
-      }
-      if( Motordata.mstep!=Motordata.INJGPH)	
-      {
-        Motordata.station=Ready;
-        Motordata.Flgsw=1;
-        TIM5_Ready_StartCount();
-        Adc_Scan_timetrig_init();
-      }
-    } break;	
+      Motordata.station = StartRun;
+    }
+    if( Motordata.mstep != Motordata.INJGPH)	
+    {
+      Motordata.station = Ready;
+      Motordata.Flgsw = 1;
+      TIM5_Ready_StartCount();
+      Adc_Scan_timetrig_init();
+    }
+    break;	
   case StartRun:        //加速同步启动
-    {
-      if( Motordata.INJGPH!=0)
-      {   
-        PWM_INIT();//==重新初始化
+    if( Motordata.INJGPH!=0)
+    {   
+      PWM_INIT();       //==重新初始化
+      if(Motordata.MFR == CW)
+      {
+        Motordata.bstep.nwstep= poztable[Motordata.INJGPH]; 
+      }
+      if(Motordata.MFR == CCW)
+      {//Motordata.bstep.nwstep=1;  
+        Motordata.bstep.nwstep= poztable[Motordata.INJGPH];
+      }
+      if(Motordata.bstep.nwstep>=1&&Motordata.bstep.nwstep<=6)
+      {
+        //TIM5_StartCount();			
+        Motordata.station= NorRun;
+        Motordata.SWhkey.KILLrun=5;		 
+        //setup ch4
+        TIM1->CCMR4 = 0x68;     // TIM1_CCMR4=0x68;
+        TIM1->CCER2 |= 0x30;    // TIM1_CCER2_CC4P =1;TIM1_CCER2_CC4E =1;
+        Motordata.outduty=50;
+        //adc  pwm trig 
+        Adc_Scan_pwmtrig_init();
+        Adc_Start();
+        Motordata.TRcount=50;
+        Motordata.TVcount=PSNLV;
+        
         if(Motordata.MFR==CW)
         {
-          Motordata.bstep.nwstep= poztable[Motordata.INJGPH]; 
-        }//正位置
-        if(Motordata.MFR==CCW)//反启动
-        {//Motordata.bstep.nwstep=1;  
-          Motordata.bstep.nwstep= poztable[Motordata.INJGPH];
+          TS_ch_ph(phztable[Motordata.INJGPH]);
+          Motordata.TQcount=Motordata.TVcount;
         }
-        if(Motordata.bstep.nwstep>=1&&Motordata.bstep.nwstep<=6)
-        {
-//TIM5_StartCount();			
-          Motordata.station= NorRun;
-          Motordata.SWhkey.KILLrun=5;		 
- //setup ch4
-          TIM1->CCMR4 = 0x68;     // TIM1_CCMR4=0x68;
-          TIM1->CCER2 |= 0x30;    // TIM1_CCER2_CC4P =1;TIM1_CCER2_CC4E =1;
-          Motordata.outduty=50;
-          //adc  pwm trig 
-          Adc_Scan_pwmtrig_init();
-          Adc_Start();
-          Motordata.TRcount=50;
-          Motordata.TVcount=PSNLV;
-          
-          if(Motordata.MFR==CW)//正启动
-          {
-            TS_ch_ph(phztable[Motordata.INJGPH]);
-            Motordata.TQcount=Motordata.TVcount;
-          }
-          if(Motordata.MFR==CCW)//反启动
-          {					
-            TSR_ch_ph( prztable[Motordata.INJGPH]);//==未顺 
-            Motordata.TQcount=Motordata.TVcount;
-          }   
-        }
+        if(Motordata.MFR==CCW)
+        {					
+          TSR_ch_ph( prztable[Motordata.INJGPH]);       // 未顺 
+          Motordata.TQcount=Motordata.TVcount;
+        }   
       }
-      if( Motordata.INJGPH==0)
-      {
-        Motordata.station=Stop;
-        Motordata.Flgsw=0;
-        Adc_Scan_timetrig_init();
-        TIM5_Ready_StartCount();
-      }	
-    } break;	
+    }
+    if( Motordata.INJGPH==0)
+    {
+      Motordata.station=Stop;
+      Motordata.Flgsw=0;
+      Adc_Scan_timetrig_init();
+      TIM5_Ready_StartCount();
+    }
+    break;	
   case NorRun:    // 运行
+    //MCTask_Ready();
+    Motordata.prct.DISv= Motordata.prct.Volt;
+    Motordata.prct. DIStp=Motordata.prct.Tempr; // 温度
+    Motordata.prct. DIStp = Motordata.prct.MosTemp;
+    Motordata.prct. DIStp = Motordata.prct.MosAddBatTemp;
+    check_erorr();
+    if( Motordata.Dswitch==MOTOR_ON)
+    {	 
+      Motordata.SWhkey.KILLrun=0;
+    }
+    if( Motordata.Dswitch==MOTOR_OFF)	
     {
-      //MCTask_Ready();
-      Motordata.prct.DISv= Motordata.prct.Volt;
-      Motordata.prct. DIStp=Motordata.prct.Tempr;//温度
-      Motordata.prct. DIStp = Motordata.prct.MosTemp;
-      Motordata.prct. DIStp = Motordata.prct.MosAddBatTemp;
-      check_erorr();
-      if( Motordata.Dswitch==MOTOR_ON)
-      {	 
-        Motordata.SWhkey.KILLrun=0;
-      }
-      if( Motordata.Dswitch==MOTOR_OFF)	
+      //Motordata.outduty=1;
+      ChangeDuty(0);
+      Motordata.SWhkey.KILLrun+=1;
+      if( Motordata.SWhkey.KILLrun==800)	//800
       { 
-//Motordata.outduty=1;
-        ChangeDuty(0);
-        Motordata.SWhkey.KILLrun+=1;
-        if( Motordata.SWhkey.KILLrun==800)	//800
-        { 
-          TIM1->CCER2 &= 0xef;  // TIM1_CCER2_CC4E =0;
-          ChangeDuty(1);
-          DisAllPwmOut();
+        TIM1->CCER2 &= 0xef;  // TIM1_CCER2_CC4E =0;
+        ChangeDuty(1);
+        DisAllPwmOut();
 #ifdef	FUNC_BREAK_EN
-          GPIOC->ODR |= 0xe0;     // PC6_OUT=1; PC5_OUT=1; PC7_OUT=1;	
+        GPIOC->ODR |= 0xe0;     // PC6_OUT=1; PC5_OUT=1; PC7_OUT=1;	
 #else
-          GPIOC->ODR &= 0x1f;   // PC6_OUT=0;PC5_OUT=0;PC7_OUT=0;
+        GPIOC->ODR &= 0x1f;   // PC6_OUT=0;PC5_OUT=0;PC7_OUT=0;
 #endif					
-          //js170720 dlay (4000);
-          dlay (4000);
-          GPIOC->ODR &= 0x1f;     // PC6_OUT=0; PC5_OUT=0; PC7_OUT=0;
-          Motordata.station=Ready;
-          Motordata.Flgsw=0;
-          Motordata.outduty=1;
-          Adc_Scan_timetrig_init();
-          TIM5_Ready_StartCount();
-        }
-      }	
-      ChangeDuty(Motordata.outduty);
-    } break;
-  case  Stop://异常停止=报错状态====
-    {
-//EBrake();//=MISTAKE;
-      MCTask_Stop();	
-//报错===============	
-      ChangeDuty(0);	
-//      if(Motordata.fault != 0)
-//      {
-//        PD2_OUT=0;
-//      }
-//      else
-//      {
-//        PD2_OUT=1;
-//      }		
-      if( Motordata.Dswitch==MOTOR_OFF)	
-      { 
-        TIM1->CCER2 &= 0xef;  // TIM1_CCER2_CC4E =0;				
-        ChangeDuty(0);
+        //js170720 dlay (4000);
+        dlay (4000);
+        GPIOC->ODR &= 0x1f;     // PC6_OUT=0; PC5_OUT=0; PC7_OUT=0;
+        Motordata.station=Ready;
         Motordata.Flgsw=0;
         Motordata.outduty=1;
-        DisAllPwmOut();
-        Motordata.UI.blink = 0;
-        Motordata.station = Ready;
         Adc_Scan_timetrig_init();
         TIM5_Ready_StartCount();
-      }	
-    } break;
+      }
+    }	
+    ChangeDuty(Motordata.outduty);
+    break;
+  case Stop:
+    MCTask_Stop();
+    ChangeDuty(0);
+    if( Motordata.Dswitch == MOTOR_OFF)
+    {
+      TIM1->CCER2 &= (~TIM1_CCER2_CC4E);			
+      ChangeDuty(0);
+      Motordata.Flgsw = 0;
+      Motordata.outduty = 1;
+      DisAllPwmOut();
+      Motordata.UI.blink = 0;
+      Motordata.station = Ready;
+      Adc_Scan_timetrig_init();
+      TIM5_Ready_StartCount();
+    }
+    break;
+  default:
+    break;
   }
 }
 

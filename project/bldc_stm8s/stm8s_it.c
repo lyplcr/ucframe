@@ -174,25 +174,149 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
   Motordata.UI.blink = 9;
 }
 
-/**
-  * @brief Timer1 Capture/Compare Interrupt routine.
-  * @param  None
-  * @retval None
-  */
+//@brief Timer1 Capture/Compare Interrupt routine.
+#if 1
 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 {
-  /* In order to detect unexpected events during development,
-     it is recommended to set a breakpoint on the following instruction.
-  */
+#if 1
+  static uint16_t delay = 0;
+  
+  delay++;
+  if (delay < 100)
+  {
+    FScan_fon();
+  }
+  else if (delay < 200)
+  {
+    FScan_fof();
+  }
+  else
+  {
+    delay = 0;
+  }
+#endif
 }
-
-/**
-  * @brief Timer5 Update/Overflow/Break/Trigger Interrupt routine.
-  * @param  None
-  * @retval None
-  */
-INTERRUPT_HANDLER(TIM5_UPD_OVF_BRK_TRG_IRQHandler, 13)
+#else
+//uint8_t TimeCounter = 0;
+uint8_t step = 1;
+INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 {
+   /* Clear TIM1 COM pending bit */
+  TIM1_ClearITPendingBit(TIM1_IT_COM);
+
+  if(step == 1)
+  {
+    /* Next step: Step 2 Configuration ---------------------------- */  
+    /*  Channel3 configuration */
+  TIM1_CCxCmd(TIM1_CHANNEL_3, DISABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_3, DISABLE);
+
+  /*  Channel1 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_1,(TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_ACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_1, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_1, ENABLE);
+    
+  /*  Channel2 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_2, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_INACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_2, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_2, ENABLE);  
+    step++;
+  }
+  else if(step == 2)
+  {
+    /* Next step: Step 3 Configuration ---------------------------- */
+    /*  Channel2 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_2, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_INACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_2, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_2, ENABLE);
+
+  /*  Channel3 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_3, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_ACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_3, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_3, ENABLE);
+    
+  /*  Channel1 configuration */
+  TIM1_CCxCmd(TIM1_CHANNEL_1, DISABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_1, DISABLE); 
+    step++;
+  }
+  else if(step == 3)
+  {
+    /* Next step: Step 4 Configuration ---------------------------- */
+    /*  Channel3 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_3, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_ACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_3, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_3, ENABLE);
+
+  /*  Channel2 configuration */
+  TIM1_CCxCmd(TIM1_CHANNEL_2, DISABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_2, DISABLE);
+    
+  /*  Channel1 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_1, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_INACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_1, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_1, ENABLE);
+    step++;
+  }
+  else if(step == 4)
+  {
+    /* Next step: Step 5 Configuration ---------------------------- */
+  /*  Channel3 configuration */
+  TIM1_CCxCmd(TIM1_CHANNEL_3, DISABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_3, DISABLE);
+  
+  /*  Channel1 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_1, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_INACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_1, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_1, ENABLE);
+
+  /*  Channel2 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_2, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_ACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_2, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_2, ENABLE);    
+    step++;
+  }
+  else if (step == 5)
+  {
+    /* Next step: Step 6 Configuration ---------------------------- */
+  /*  Channel3 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_3, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_INACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_3, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_3, ENABLE);
+
+  /*  Channel1 configuration */
+  TIM1_CCxCmd(TIM1_CHANNEL_1, DISABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_1, DISABLE);
+    
+  /*  Channel2 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_2, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_ACTIVE);
+    TIM1_CCxCmd(TIM1_CHANNEL_2, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_2, ENABLE);
+    step++;
+  }
+  else
+  {
+    /* Next step: Step 1 Configuration ---------------------------- */
+    /*  Channel1 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_1, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_ACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_1, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_1, ENABLE);
+    
+  /*  Channel3 configuration */
+  TIM1_SelectOCxM(TIM1_CHANNEL_3, (TIM1_OCMode_TypeDef)TIM1_FORCEDACTION_INACTIVE);
+  TIM1_CCxCmd(TIM1_CHANNEL_3, ENABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_3, ENABLE);
+
+  /*  Channel2 configuration */
+  TIM1_CCxCmd(TIM1_CHANNEL_2, DISABLE);
+  TIM1_CCxNCmd(TIM1_CHANNEL_2, DISABLE);
+    step = 1;
+  }
+}
+#endif
+// @brief Timer5 Update/Overflow/Break/Trigger Interrupt routine.
+INTERRUPT_HANDLER(TIM5_UPD_OVF_BRK_TRG_IRQHandler, 13)
+{  
   TIM5->IER =0x00;
   TIM5->SR1 = 0x00;
   
@@ -213,7 +337,7 @@ INTERRUPT_HANDLER(TIM5_UPD_OVF_BRK_TRG_IRQHandler, 13)
   }
   if(Motordata.UI.blink == 0)
   {
-  // DIS_mode_scan_status();
+    // DIS_mode_scan_status();
     FScan_disply();
   }
   switch(Motordata.station)
@@ -241,7 +365,7 @@ INTERRUPT_HANDLER(TIM5_UPD_OVF_BRK_TRG_IRQHandler, 13)
         }
       }
       else
-      { 
+      {
         if(Motordata.SWhkey.TRdelay1 > 0)
         {
           Motordata.SWhkey.TRdelay1--;	
@@ -255,25 +379,25 @@ INTERRUPT_HANDLER(TIM5_UPD_OVF_BRK_TRG_IRQHandler, 13)
     break;
   case NorRun :    
     if(Motordata.TQcount==0)
-    {     
+    {
       MCTask_NorRun1();	
     }
     break;
-  case  Stop :  
+  case Stop:  
     if (ADC1->CSR & ADC1_CSR_EOC == 0)  // if(ADC_CSR_EOC==0)
     {
       Adc_Start();
     }
     //if(Motordata.fault==eNO)	
-    if(Motordata.UI.showtime>=4000)
+    if(Motordata.UI.showtime >= 4000)
     {
-      Motordata.UI.showtime=0;
-      Motordata.UI.showcount+=1;
-      if( Motordata.UI.showcount==14)
+      Motordata.UI.showtime = 0;
+      Motordata.UI.showcount += 1;
+      if( Motordata.UI.showcount == 14)
       {
         Motordata.UI.showcount = Motordata.UI.blink;
-        //	Motordata.UI.Blink
-      }	
+        // Motordata.UI.Blink
+      }
     }
     Motordata.UI.showtime++;
     break;
@@ -346,7 +470,23 @@ INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
 {
   static unsigned char Start_Slow_Cnt = 0;
   ADC1->CSR &= (~ADC1_CSR_EOC);      // ADC_CSR_EOC=0;
-
+#if 0
+  static uint16_t delay = 0;
+  
+  delay++;
+  if (delay < 100)
+  {
+    FScan_fon();
+  }
+  else if (delay < 200)
+  {
+    FScan_fof();
+  }
+  else
+  {
+    delay = 0;
+  }
+#endif
   switch(Motordata.station)
   {
   case Ready:
@@ -392,16 +532,9 @@ INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
   }
 }
 
-/**
-  * @brief Timer6 Update/Overflow/Trigger Interrupt routine.
-  * @param  None
-  * @retval None
-  */
+//@brief Timer6 Update/Overflow/Trigger Interrupt routine.
 INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
 {
-  /* In order to detect unexpected events during development,
-     it is recommended to set a breakpoint on the following instruction.
-  */
   TIM6->IER = 0x00;
   TIM6->SR1 = 0x00; 	
   TIM6->IER = 0x01;

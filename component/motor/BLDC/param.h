@@ -66,7 +66,7 @@
 //soft oc
 #define	FUNC_SOC_PROTECT_EN
 //
-#define	OCP_VOLT_ADC			750		//38a
+#define	OCP_VOLT_ADC			750		//38a 最大电流
 
 //LIMIT CURR
 #define	FUNC_LIMIT_CURR_EN
@@ -289,7 +289,7 @@ typedef  enum   Mert
 // 
 typedef struct swh
 {
-  uint8_t gear;        // 档位齿轮
+  uint8_t gear;        // 档位
   uint8_t swkey;
   uint8_t sskey;
   uint8_t sakeyflg;
@@ -339,7 +339,7 @@ typedef struct prarm
   uint16_t TVcount;
   int16_t  outduty;  
   uint8_t  BatPower;
-  uint8_t  Dswitch;
+  uint8_t  Dswitch;     // 开关状态
   uint8_t  INJGPH;
   uint8_t  MFR;
   uint8_t  Flgsw;

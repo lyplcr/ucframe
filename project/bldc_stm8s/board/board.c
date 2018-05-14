@@ -63,6 +63,40 @@ void ADCInit(void)
 {
   
 }
+void TIM1_Config(void)
+{
+  /* TIM1 Peripheral Configuration */ 
+  TIM1_DeInit();
+
+  /* Time Base configuration */
+  TIM1_TimeBaseInit(0, TIM1_COUNTERMODE_UP, 4095, 0);
+
+  /* Channel 1, 2 and 3 Configuration in TIMING mode */  
+  
+  /* TIM1_Pulse = 2047 */
+  TIM1_OC1Init(TIM1_OCMODE_TIMING, TIM1_OUTPUTSTATE_ENABLE, TIM1_OUTPUTNSTATE_ENABLE,
+               2047, TIM1_OCPOLARITY_HIGH, TIM1_OCNPOLARITY_HIGH, TIM1_OCIDLESTATE_SET,
+               TIM1_OCNIDLESTATE_SET);  
+
+  /* TIM1_Pulse = 1023 */
+  TIM1_OC2Init(TIM1_OCMODE_TIMING, TIM1_OUTPUTSTATE_ENABLE, TIM1_OUTPUTNSTATE_ENABLE, 1023,
+               TIM1_OCPOLARITY_HIGH, TIM1_OCNPOLARITY_HIGH, TIM1_OCIDLESTATE_SET, 
+               TIM1_OCNIDLESTATE_SET); 
+
+  /* TIM1_Pulse = 511 */
+  TIM1_OC3Init(TIM1_OCMODE_TIMING, TIM1_OUTPUTSTATE_ENABLE, TIM1_OUTPUTNSTATE_ENABLE,
+               511, TIM1_OCPOLARITY_HIGH, TIM1_OCNPOLARITY_HIGH, TIM1_OCIDLESTATE_SET,
+               TIM1_OCNIDLESTATE_SET); 
+
+  /* Automatic Output enable, Break, dead time and lock configuration*/
+  TIM1_BDTRConfig( TIM1_OSSISTATE_ENABLE,  TIM1_LOCKLEVEL_OFF, 1,  TIM1_BREAK_DISABLE,
+                   TIM1_BREAKPOLARITY_LOW,  TIM1_AUTOMATICOUTPUT_ENABLE);
+  TIM1_CCPreloadControl(ENABLE);
+  TIM1_ITConfig(TIM1_IT_COM, ENABLE);
+
+  /* TIM1 counter enable */
+  TIM1_Cmd(ENABLE);
+}
 
 //
 void Timer1Init(void)
@@ -91,27 +125,7 @@ void Timer1Init(void)
 #endif
   TIM1->EGR |= 0x01;
   TIM1->CR1 |= 0x01;
-  
-#if 0
-/***********************************************************
-Channel 1, 2,3 and 4 Configuration in PWM mode 
-000：冻结。输出比较寄存器TIM1_CCR1与计数器TIM1_CNT间的比较?設C1REF不起作用；
-001：匹配时设置通道1的输出为有效电平。当计数器TIM1_CNT的值?氩痘?比较寄存器1 (TIM1_CCR1)相同时，强制OC1REF为高。
-010：匹配时设置通道1的输出为无效电平。当计数器TIM1_CNT的值?氩痘?比较寄存器1 (TIM1_CCR1)相同时，强制OC1REF为低。
-011：翻转。当TIM1_CCR1=TIM1_CNT时，翻转OC1REF的电平。100：强制为无效电平。强制OC1REF为低。
-101：强制为有效电平。强制OC1REF为高。
-110：PWM模式1－ 在向上计数时，一旦TIM1_CNT<TIM1_CCR1时通道1?有效电平，否则为无效电平；在向下计数时，一旦TIM1_CNT>TIM1_CCR1时通道1为无效电平(OC1REF=0)，否则为有效电平(OC1REF=1)。
-111：PWM模式2在向上计数时，一旦TIM1_CNT<TIM1_CCR1时通道1为无效电平，否则为有效电平；在向下计数时，一旦TIM1_CNT>TIM1_CCR1时通道1为有效电平，否则为无效电平。 
-*************************************************************/
-  // Clear Update Flag
-  /*TIM1_IER_UIE=1;*/
   DisAllPwmOut();
-  /*
-  //default to 0% duty cycle
-  ToCMPxH( TIM1->CCR1H, 0 );
-  ToCMPxL( TIM1->CCR1L, 0 );
-   */
-#endif
 }
 
 //
@@ -144,7 +158,7 @@ void Timer6Init(void)
   TIM6->IER = 0x01;
 }
 
-void Timer5Start(uint16_t arr)
+void Timer5ConfArr(uint16_t arr)
 {
   TIM5->ARRH = (uint8_t)(arr<<8);
   TIM5->ARRL = (uint8_t)arr;
@@ -181,9 +195,11 @@ void BoardInit(void)
   GPIOE->ODR &= 0xdf;
   GPIOF->ODR &= 0xef;
   PWM_INIT();
+//  TIM1_Config();
   TIM5_Conf();
   Tim6Init();
   TIM5_StartCount();
+//  TIM5_Start(1000);
   EnIRQ();      rim();
 }
 

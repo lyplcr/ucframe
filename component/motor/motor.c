@@ -35,8 +35,8 @@ void UIInit(void)
   Motordata.UI.bkcount = 0;
   Motordata.UI.adspeedt = 3;
   Motordata.UI.blink = 0;	
-  // 
-  if(Get_sw_fr()==0) Motordata.MFR = SW_POS;	//CW	
+  //
+  if(Get_sw_fr()==0) Motordata.MFR = SW_POS;	//CW
   else Motordata.MFR = SW_REVS;			//CCW
                                               
   Motordata.UI.MFRch = Motordata.MFR;
@@ -64,7 +64,4 @@ void MotorInit(void)
   UIInit();
   Motordata.Dswitch = MOTOR_OFF;
 }
-
-//void FScan_disply(void)
-//{}
 /************************ (C) COPYRIGHT ucframe team ******* END OF FILE ******/
